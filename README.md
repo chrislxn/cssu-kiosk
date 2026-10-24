@@ -2,7 +2,7 @@
 
 **Digital signage system for the Computer Science Student Union (CSSU) at the University of Toronto.**
 
-**For Frontend Dev Docs, See /frontend
+**For Frontend Dev Docs, See /frontend**
 
 Visit our new office at BA2285@ Bahen Center !
 
