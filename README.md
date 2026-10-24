@@ -2,6 +2,10 @@
 
 **Digital signage system for the Computer Science Student Union (CSSU) at the University of Toronto.**
 
+**For Frontend Dev Docs, See /frontend
+
+Visit our new office at BA2285@ Bahen Center !
+
 A lightweight, offline-first digital signage platform designed to run continuously on an ARM64 single-board computer.
 
 The system serves a locally hosted web application, displays it through Chromium, and retrieves updates automatically from GitHub Releases.
