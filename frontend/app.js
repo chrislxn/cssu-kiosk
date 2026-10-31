@@ -40,6 +40,7 @@
     const ids = new Set();
     copy.slides.forEach(s => {
       text(s.id, 32, 'slide id'); if (ids.has(s.id)) throw Error('Slide IDs must be unique'); ids.add(s.id);
+      if (s.isSample != null && typeof s.isSample !== 'boolean') throw Error('isSample must be a boolean');
       if (!ART.includes(s.art) || !ART.includes(s.theme)) throw Error('Unknown art/theme');
       if (!Array.isArray(s.title) || s.title.length !== 2) throw Error('Use two title lines');
       s.title.forEach(t => text(t, 22, 'title line'));
@@ -75,7 +76,7 @@
     if (start < end) return weekdays.includes(day) && minute >= start && minute < end;
     return (weekdays.includes(day) && minute >= start) || (weekdays.includes((day+6)%7) && minute < end);
   }
-  const fallback = {id:'standby',category:'THE COMMON ROOM',theme:'code',art:'code',title:['Your space.','Your people.'],accentLine:1,description:'No demo events are scheduled right now.',eventName:'Community board',meta:'Awaiting the next scheduled item',tag:'DEMO STANDBY',shortTitle:'Community board',shortDetail:'New content coming soon'};
+  const fallback = {id:'standby',category:'THE COMMON ROOM',theme:'code',art:'code',isSample:false,title:['Your space.','Your people.'],accentLine:1,description:'No events are scheduled right now.',eventName:'Community board',meta:'Awaiting the next scheduled item',tag:'COMMUNITY BOARD',shortTitle:'Community board',shortDetail:'New content coming soon'};
   function refreshEligibility(now, force = false) {
     let nextSlides = content.slides.filter(s => eligible(s,now));
     if (!nextSlides.length) nextSlides = [fallback];
@@ -91,7 +92,7 @@
     if (force || key !== announcementKey) {
       activeAnnouncements = notices; announcementKey = key; announcementIndex = 0;
       clearTimeout(announcementTimer); $('announcement').classList.remove('changing');
-      $('announcement').textContent = activeAnnouncements[0]?.text || 'DEMO BOARD / No current notices. All events shown are illustrative samples.';
+      $('announcement').textContent = activeAnnouncements[0]?.text || 'No current notices.';
       announcementStarted = performance.now();
     }
   }
@@ -99,9 +100,11 @@
     $('slides').replaceChildren(); $('slide-tracks').replaceChildren();
     activeSlides.forEach((s, i) => {
       const slide = node('article',`slide theme-${s.theme}`);
-      slide.setAttribute('aria-label',`${i+1} of ${activeSlides.length}: ${s.eventName} — sample event`);
+      const isSample = s.isSample !== false;
+      slide.setAttribute('aria-label',`${i+1} of ${activeSlides.length}: ${s.eventName}${isSample ? ' — sample event' : ''}`);
       slide.setAttribute('aria-roledescription','slide');
-      const top = node('div','slide-top'); top.append(node('span','',s.category),node('span','sample','SAMPLE EVENT'));
+      const top = node('div','slide-top'); top.append(node('span','',s.category));
+      if (isSample) top.append(node('span','sample','SAMPLE EVENT'));
       const title = node('h1'); s.title.forEach((line,j) => title.append(node('span',j === s.accentLine ? 'accent':'',line)));
       const art = node('img','hero-art'); art.src = `assets/${s.art}.svg`; art.alt = ''; art.width = 755; art.height = 755;
       const details = node('div','event-details'); details.append(node('span','event-meta',s.meta));

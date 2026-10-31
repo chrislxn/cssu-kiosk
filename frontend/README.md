@@ -125,6 +125,21 @@ Edit `window.CSSU_CONTENT` in `content.js`, then reload or deploy a new release.
 
 Use short, two-line titles and one-sentence descriptions. [DESIGN-SPEC.md](DESIGN-SPEC.md) distinguishes recommended copy lengths from validation limits. Retained fields such as `detail`, `coffee.note`, `shopNote`, `shortTitle`, and `shortDetail` are still validated even where they are not visible. Do not remove or rename them without updating their schema and rendering deliberately.
 
+`slides[].isSample` is an optional boolean. Omitted or `true` keeps the visible `SAMPLE EVENT` label and accessible sample-event suffix for existing demo data. Set it to `false` only for owner-approved real events. The generic standby poster is not an event and carries no sample label.
+
+### Current event content and provenance
+
+The two owner-supplied Instagram screenshots replace the three fictional demo posters. Copy uses the existing themes and local illustrations; those illustrations are decorative, not the original event artwork.
+
+| Event | Toronto date/time | Venue | Poster details |
+| --- | --- | --- | --- |
+| Fumbles & Failures | November 3, 2026, 1–4 PM | BA3200 | CSSU × WiCS; profs, grad students, undergrads; RSVP link in @uoftcssu bio |
+| Bytes Around the World | November 6, 2026, 3–5 PM | BA3200 | Free food |
+
+Source: owner-provided screenshots of @uoftcssu (Fumbles & Failures is co-posted with @uoftwics), supplied for the October 31, 2026 maintenance request. The posters omit a year; 2026 follows that request context. No RSVP destination was provided, so the board refers to the account bio without inventing a URL.
+
+Both posters and their corresponding notices are eligible immediately (`startsAt: null`, `schedule: null`) to promote the upcoming events. They expire at the advertised end time, exclusively: `2026-11-03T16:00:00-05:00` and `2026-11-06T17:00:00-05:00`. Toronto is on EST after the November 1 DST change. After both expire, the existing eligibility mechanism selects the neutral community standby poster; expired event notices also disappear. The demo-price disclaimer remains in place.
+
 Product `icon` values select local files from `assets/products/`: `cola`, `energy`, `bolt`, `chips`, `chocolate`, `icecream`, `gum`, and `mini-chocolate`. Coffee uses its own `coffee` SVG. Unknown values use the local `snack` fallback. Every visible item must retain a suitable picture.
 
 ### Current owner-provided price baseline
