@@ -2,9 +2,10 @@
 
 **Project:** CSSU Digital Signage  
 **Platform:** Orange Pi 3B / Armbian / Chromium Kiosk  
-**Document Version:** 1.0  
+**Document Version:** 1.1<br>
+**Revised:** 31 October 2026<br>
 **Deployment:** GitHub Releases → Local Nginx → Chromium  
-**Status:** Engineering Requirements
+**Status:** Engineering requirements; target-device release acceptance pending
 
 ---
 
@@ -29,8 +30,9 @@ The system must remain functional without an active internet connection.
 | Deployment Source | GitHub Releases |
 | Repository | `chrislxn/cssu-kiosk` |
 | Deployment Directory | `/srv/cssu-kiosk/current/` |
-| Update Frequency | Every 30 minutes |
+| Device Release Check | Every 30 minutes (device-managed; confirm installed timer) |
 | Frontend Version Polling | Every 10 seconds |
+| World-Time Broadcast | Every 10 Toronto minutes; 20 seconds per broadcast |
 | Scheduled System Reboot | 05:00 America/Toronto |
 
 The frontend must not depend on GitHub, cloud APIs, external CDNs, or any other external service to render its essential content.
@@ -39,19 +41,29 @@ The frontend must not depend on GitHub, cloud APIs, external CDNs, or any other 
 
 The application should remain a lightweight static web application.
 
-Recommended structure:
+Current runtime structure (all listed scripts/styles and every referenced local asset are required; the worker remains disabled by default):
 
 ```text
 kiosk.zip
 ├── index.html
 ├── app.js
 ├── content.js
+├── display-shell.js
+├── time-signal-config.js
+├── time-signal.js
 ├── update.js
 ├── styles.css
+├── time-signal.css
 ├── assets/
-│   ├── logo.webp
-│   ├── icons/
-│   └── images/
+│   ├── cssu-logo.webp
+│   ├── cssu-icon.webp
+│   ├── code.svg
+│   ├── play.svg
+│   ├── build.svg
+│   ├── microphone.svg
+│   ├── world-food.svg
+│   ├── world-clock.svg
+│   └── products/        # All local product SVGs, including the fallback
 └── sw.js               # Optional; disabled by default
 ```
 
@@ -305,6 +317,14 @@ The frontend should:
 
 The screen should never intentionally become blank because an external resource could not be loaded.
 
+### Approved poster and clock behavior
+
+Use [DESIGN-SPEC.md](../DESIGN-SPEC.md) for visual requirements and [README.md](../README.md) for the current content contract. The November posters use their approved pale-blue/navy microphone theme and sky-blue/yellow-green world-food theme within the existing 1920 × 1080 composition. Real events carry no sample-event label; the independent demo-price disclaimer remains.
+
+The integrated Toronto clock remains visible during normal playback. The independent world-time signal takes over at Toronto `:00`, `:10`, `:20`, `:30`, `:40`, and `:50`, lasting 20 seconds: Toronto for 5 seconds, the first four-city group for 7.2 seconds, the second four-city group for 7.2 seconds, and a 0.6-second exit. It is silent and restores the current eligible poster and price ribbon. The 14-second poster interval, 10-minute time-signal cadence, 10-second browser version poll, and device release-check timer are separate settings.
+
+Event validity is start-inclusive and end-exclusive. Expired posters and their corresponding notices are removed by the one-second eligibility refresh without another deployment. After all events expire, a neutral community standby poster replaces them, while ordinary notices, the price ribbon, and both clock modes continue running. This must work entirely from installed local files.
+
 ### Mouse Cursor
 
 The frontend may use:
@@ -397,6 +417,64 @@ Before publishing a production Release, verify the following:
 - [ ] No secrets or development credentials are included.
 - [ ] The application works without a development server.
 - [ ] The package does not require a build step on the device.
+- [ ] No `version.txt` is bundled; the updater generates it from the activated release tag.
+- [ ] The archive contains no wrapping `frontend/` or `cssu-signage/` directory, `.git`, `__MACOSX`, or `.DS_Store` entries.
+- [ ] The archive passes a ZIP integrity check and the extracted runtime files match the reviewed source revision.
+- [ ] All new activity illustrations and all world-clock/configuration scripts and styles are present, with `serviceWorker: false` and `persistContent: false` retained.
+- [ ] A companion `kiosk.zip.sha256`, when supplied, contains the SHA-256 of the exact uploaded `kiosk.zip` and the filename `kiosk.zip`; record the archive digest and release source revision. The installed updater's checksum-consumption mechanism must be confirmed on the device rather than assumed from the companion filename.
+
+### Poster appearance and content
+
+- [ ] At 1920 × 1080, both event titles remain two lines at the approved 174 px size, with no clipping, overlap with the main illustration, or scrollbars.
+- [ ] Fumbles & Failures uses the pale-blue/navy palette and local microphone/cloud/repair illustration; Bytes Around the World uses the sky-blue/yellow-green palette and local world-food/flight illustration.
+- [ ] The original CSSU logo, shared composition, 112 px price ribbon, approved CAD prices, and demo-price labels are preserved.
+- [ ] Switching in both directions between light and dark posters updates the logo presentation, integrated clock, notices, and progress text with adequate contrast; standby restores the dark-teal palette.
+- [ ] Real events (`isSample: false`) omit visible and accessible sample-event labels; omitted/true retains both labels for sample content. Invalid updates leave the last valid content running.
+- [ ] All illustrations load locally, reduced-motion preferences are respected, and the display requires no viewer input.
+
+### World-time scheduling and restoration
+
+- [ ] Toronto `:00`, `:10`, `:20`, `:30`, `:40`, and `:50` automatically start the signal; verify a boundary immediately before/at its due time, then the next ten-minute boundary.
+- [ ] Exactly one one-shot scheduler timer is armed while idle, with no repeating idle scheduler interval, grace window, or artificial trigger delay. Seconds update only during an active signal.
+- [ ] A registered callback delivered late executes once, and the next deadline remains the next real ten-minute boundary rather than ten minutes after that callback.
+- [ ] Opening or returning after a boundary waits for a future boundary; visibility changes and back/forward-cache restoration re-arm scheduling without stale playback.
+- [ ] A scheduled boundary preempts an overlapping operator preview; previews do not consume scheduled slots. Only completed scheduled broadcasts are persisted for reload deduplication.
+- [ ] The 20-second sequence is Toronto at 0–5 s; Los Angeles/New York/Shanghai/London at 5–12.2 s; Tokyo/Seoul/New Delhi/Sydney at 12.2–19.4 s; exit at 19.4–20 s. Each four-city page is four simultaneous portrait columns.
+- [ ] All nine cities show correct local dates, seconds, IANA-derived zone/offset data, New Delhi's half-hour offset, and distinct repeated-hour DST slots.
+- [ ] Poster/notice advancement and the price ribbon pause for the signal. At exit, the eligible poster resumes with a fresh 14-second interval, correct palette and restored accessibility attributes; the price ribbon resumes.
+- [ ] Event updates, rejected updates, and event timezone edits do not reset an active signal. Either module can run without the other module's API.
+- [ ] A simulated 24-hour run completes 144 scheduled signals with no accumulation of idle timers. Separately verify real device timing and long-duration operation; simulation is not hardware endurance evidence.
+
+### Expiry and standby
+
+Use the current owner-approved 2026 dates and Toronto EST offsets; the source posters omit a year, and the chosen year is documented in README.md.
+
+| Test boundary | Required result |
+| --- | --- |
+| Immediately before `2026-11-03T16:00:00-05:00` | Both posters are eligible; the Fumbles notice remains eligible |
+| At/after `2026-11-03T16:00:00-05:00` | Fumbles and its notice are ineligible; the next eligibility refresh leaves Bytes as the only event |
+| Immediately before `2026-11-06T17:00:00-05:00` | Bytes and its notice remain eligible |
+| At/after `2026-11-06T17:00:00-05:00` | Bytes and its notice are ineligible; the next refresh selects standby with no expired-event notice |
+
+- [ ] Check the pure eligibility result 1 ms before, exactly at, and 1 ms after each end timestamp, then check automatic rendered removal on the next one-second refresh.
+- [ ] Standby reads “Your space.” / “Your people.” and “No events are scheduled right now.”, uses the original dark-teal palette, and carries no sample-event label. Fictional sample events do not reappear.
+- [ ] After expiry, ordinary community/demo-menu notices, CAD prices, integrated Toronto time, and ten-minute broadcasts remain operational; no reload, release, or manual deletion is required.
+- [ ] Expiry during a broadcast leaves that broadcast intact and reveals the next eligible poster or standby on exit. Also verify a cold start after the final expiry.
+
+### Verification evidence and sign-off
+
+These checklists are requirements for each release, not a record that every item has already passed. For sign-off record the tested commit, release tag, ZIP SHA-256, environment, date, results, and any open failures. Run `node --test tests/*.test.mjs` from `frontend/` for the committed scheduler/module regressions; syntax checks alone do not establish behavior.
+
+Local verification recorded on October 31, 2026 for runtime source `22d49100d0b390c10585a63fe1d5f598b6c5a4b9`:
+
+| Scope | Evidence recorded | Remaining acceptance |
+| --- | --- | --- |
+| Scheduler and module boundaries | Both committed Node suites passed, including 144-signal simulation, late callbacks without drift, deduplication, preview preemption, restoration, timezones, and module independence | Actual Orange Pi timing/endurance |
+| Browser | Headless Chrome at 1920 × 1080 passed both poster layouts/assets, theme restoration, sample-label handling, expiry boundaries and automatic standby, reduced motion, complete 20-second playback, and automatic 12:20/12:30 triggers under a controlled clock; no failed resources, remote requests, or browser errors | Installed Chromium/Cage/HDMI visual and performance checks; explicit expiry-during-broadcast and cold-start-after-expiry cases |
+| Package | ZIP integrity, root structure, local resource references, source-byte equality, syntax, cache defaults, and SHA-256 were checked; packaged clock/config matched the owner's previous version | Published asset digest, installed updater, device-generated version and successful activation |
+| Updates and recovery | Update code/defaults were preserved; this revision did not perform device deployment or service-worker migration testing | Real Nginx refresh, unchanged/changed/empty/failed/timed-out responses, previously registered worker migration, reboot/power-loss recovery, and sustained operation |
+
+Keep target-device acceptance pending until that evidence exists. Documentation approval and a passing local simulation do not certify production readiness.
 
 ## 12. Separation of Responsibilities
 

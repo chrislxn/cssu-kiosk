@@ -14,7 +14,7 @@ This is a static display application. Normal operation requires no mouse, keyboa
 | --- | --- |
 | [DESIGN-SPEC.md](DESIGN-SPEC.md) | Human designers and developers: approved appearance, composition, motion, and content rules |
 | [AGENTS.md](AGENTS.md) | AI coding assistants: project instructions, protected decisions, and change workflow |
-| [docs/DEPLOYMENT-CONTRACT.md](docs/DEPLOYMENT-CONTRACT.md) | Owner-supplied engineering specification: device operation and production release requirements |
+| [docs/DEPLOYMENT-CONTRACT.md](docs/DEPLOYMENT-CONTRACT.md) | Engineering/deployment requirements and release acceptance: poster appearance, ten-minute/20-second clock, event expiry/standby, package integrity, local evidence, and pending device checks |
 | [ASSET-SOURCES.md](ASSET-SOURCES.md) | Provenance of official CSSU brand assets |
 | [README-zh.md](README-zh.md) | Earlier Chinese prototype guide; use this English guide for the current production handoff |
 
@@ -224,6 +224,8 @@ Do not upload the folder-wrapped demo archive unchanged. Publishing a GitHub Rel
 ## 8. Verification and handoff
 
 For a content-only edit, check syntax, the edited values, eligibility, and representative rendered copy. For shared layout or clock-controller changes, verify both the normal display and the complete broadcast at 1920 × 1080.
+
+Use [Release Acceptance Tests](docs/DEPLOYMENT-CONTRACT.md#11-release-acceptance-tests) for the current per-release checklist and evidence/sign-off requirements. [DESIGN-SPEC.md](DESIGN-SPEC.md) version 1.1 defines the approved November palettes, expiry behavior, ten-minute schedule, and 20-second three-page sequence. Keep device release checks, browser version checks, poster rotation, and world-time scheduling distinct when reviewing changes.
 
 Useful syntax checks from the project directory:
 
