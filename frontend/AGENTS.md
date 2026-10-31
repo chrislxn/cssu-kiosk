@@ -41,14 +41,14 @@ Keep the shared `#screen` container and canvas fitting independent of event init
 
 ## Protect the approved clock behavior
 
-- Trigger at Toronto local `:00` and `:30`; do not tie this to the main event timezone setting.
-- Keep the default total duration at **14 seconds**.
-- Page 1: Toronto alone, about 3.4 seconds including entry.
-- Page 2: Los Angeles, New York, Shanghai, London in four simultaneous portrait columns, about 5 seconds.
-- Page 3: Tokyo, Seoul, New Delhi, Sydney in four simultaneous portrait columns, about 5 seconds.
+- Trigger at Toronto local `:00`, `:10`, `:20`, `:30`, `:40`, and `:50`; do not tie this to the main event timezone setting.
+- Keep the default total duration at **20 seconds**.
+- Page 1: Toronto alone, about 5 seconds including entry.
+- Page 2: Los Angeles, New York, Shanghai, London in four simultaneous portrait columns, about 7.2 seconds.
+- Page 3: Tokyo, Seoul, New Delhi, Sydney in four simultaneous portrait columns, about 7.2 seconds.
 - Keep the final 0.6-second exit and restoration of the current poster with a fresh full event interval.
 - Use IANA time zones through `Intl.DateTimeFormat`. Never calculate city times from fixed hour offsets. Include local dates, DST behavior, and India's half-hour offset in verification.
-- Preserve near-boundary startup handling, same-slot reload deduplication, distinct DST repeated-hour slots, hidden-page handling, and timer cleanup.
+- Use a single one-shot timer for each absolute Toronto deadline. Do not add polling, grace-window detection, or an artificial trigger delay. Reserve the next real boundary after a callback; late callbacks must not cause drift or be silently discarded. Preserve completed-slot deduplication, preview preemption, DST repeated-hour slots, page restoration, and timer cleanup. Startup and foreground return after a boundary wait for the next boundary.
 - Do not add audio or viewer interaction without an explicit request.
 
 ## Preserve the runtime constraints
@@ -75,7 +75,7 @@ Prefer CSS transforms and opacity. Do not add permanent animation loops, repeate
 
 1. State the intended change briefly, inspect the relevant files, and make the smallest complete change within the owner's request.
 2. For content-only work, preserve surrounding item data and approved prices unless the owner asks to change them. Update documentation that would otherwise contradict the edit.
-3. For logic changes, exercise the actual failure or timing boundary. Do not present a syntax check as a behavioral test.
+3. For logic changes, exercise the actual failure or timing boundary. Run the relevant `tests/time-signal.test.mjs` and/or `tests/module-boundaries.test.mjs` regression tests with Node. Do not present a syntax check as a behavioral test.
 4. When changing event/clock coordination, verify that active broadcasts survive event updates and rejected event data, that the clock works without event globals, and that the event player works without the clock controller.
 5. For layout changes, inspect the normal display and clock pages at 1920 × 1080, with long representative text, all local pictures loaded, and no clipping or scrollbars. Verify the complete return to the poster.
 6. For update changes, check unchanged/changed/empty/failed/timed-out responses, no reload loops, and fresh resources after reload with the actual cache policy.

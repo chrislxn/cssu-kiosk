@@ -4,7 +4,7 @@
 **Product:** an unattended digital community board for the University of Toronto Computer Science Student Union  
 **Display target:** Orange Pi 3B, RK3566, 4 GB RAM, HDMI, 1920 × 1080, Chromium under Cage
 
-The application displays one full-screen event poster, an integrated Toronto clock, a small announcement, and a scrolling shop-price ribbon. At each Toronto hour and half-hour, a separate 14-second world-time broadcast temporarily takes over the screen.
+The application displays one full-screen event poster, an integrated Toronto clock, a small announcement, and a scrolling shop-price ribbon. At each Toronto ten-minute boundary, a separate 20-second world-time broadcast temporarily takes over the screen.
 
 This is a static display application. Normal operation requires no mouse, keyboard, touch input, account, shopping cart, or checkout. All essential content and assets are local. The screen can continue displaying without internet access.
 
@@ -182,20 +182,24 @@ Persisting content requires both `settings.persistContent: true` and an explicit
 
 ## 5. World-time broadcast
 
-Edit only `window.CSSU_TIME_SIGNAL_CONFIG` in `time-signal-config.js` for clock configuration. The approved total duration is **14 seconds**.
+Edit only `window.CSSU_TIME_SIGNAL_CONFIG` in `time-signal-config.js` for clock configuration. The approved total duration is **20 seconds**.
 
 | Time in the sequence | Screen |
 | --- | --- |
-| 0–3.4 s | Toronto alone; includes the opening sweep |
-| 3.4–8.4 s | Four portrait columns: Los Angeles, New York, Shanghai, London |
-| 8.4–13.4 s | Four portrait columns: Tokyo, Seoul, New Delhi, Sydney |
-| 13.4–14 s | Exit transition, then restore the poster |
+| 0–5 s | Toronto alone; includes the opening sweep |
+| 5–12.2 s | Four portrait columns: Los Angeles, New York, Shanghai, London |
+| 12.2–19.4 s | Four portrait columns: Tokyo, Seoul, New Delhi, Sydney |
+| 19.4–20 s | Exit transition, then restore the poster |
 
-The anchor is always Toronto's `:00` and `:30`, independently of the main player's schedule timezone. Browser IANA time-zone rules calculate all nine local dates, 24-hour times, seconds, abbreviations, and UTC offsets. This includes daylight-saving changes, New Delhi's half-hour offset, and different calendar days.
+The anchor is always Toronto's `:00`, `:10`, `:20`, `:30`, `:40`, and `:50`, independently of the main player's schedule timezone. Browser IANA time-zone rules calculate all nine local dates, 24-hour times, seconds, abbreviations, and UTC offsets. This includes daylight-saving changes, New Delhi's half-hour offset, and different calendar days.
 
-Keep the nine-city array in the approved order. Indices 0, 1–4, and 5–8 form the three pages. Missing or invalid optional city data falls back to the built-in cities. The controller accepts 7–30 seconds for maintenance flexibility; this does not change the approved default of 14 seconds.
+Keep the nine-city array in the approved order. Indices 0, 1–4, and 5–8 form the three pages. Missing or invalid optional city data falls back to the built-in cities. The controller accepts 7–30 seconds for maintenance flexibility; this does not change the approved default of 20 seconds.
 
-A single timer targets the next half-hour boundary; a one-second clock update runs only during the broadcast. A two-second startup grace window permits a near-boundary start. Missed older signals are not replayed. Session storage prevents a normal same-slot reload from replaying the signal; denied storage falls back to page-memory deduplication. Repeated wall-clock hours at the end of daylight saving have distinct absolute-time slots.
+The controller prebuilds the clock views, formatters, and local artwork, then reserves the next absolute Toronto ten-minute deadline with one `setTimeout`. At that deadline its callback starts the signal directly and reserves the next actual clock boundary. It does not poll for the correct second, wait two seconds, use a grace window, or schedule “10 minutes after the last callback.” There is no repeating scheduler interval. The one-second update exists only inside the active 20-second broadcast to display seconds.
+
+A page opened or restored after a boundary waits for the next boundary; it does not start a late catch-up. An operator preview is preempted if an actual scheduled boundary arrives. Visibility and back/forward-cache restoration re-arm the future deadline. Only completed scheduled signals are persisted for same-slot deduplication; previews do not consume scheduled slots. Repeated daylight-saving hours have distinct absolute-time slot IDs.
+
+Browser timers are event-loop deadlines, not hard real-time hardware interrupts. A blocked/frozen browser cannot paint a frame on time. A registered foreground callback that arrives late still executes its task once; there is no seconds-window condition that silently discards it. `CSSUTimeSignal.getState()` exposes `nextScheduledAt`, `lastScheduledAt`, `dispatchDelayMs`, and `lastOutcome` for diagnosis, with no on-screen diagnostics. The device must maintain a correct system clock and responsive browser; OS clock corrections during an otherwise continuously foreground page cannot be observed immediately without polling. Timing simulation and a short browser deadline test do not establish target-device endurance or a zero-latency guarantee.
 
 The device's system time and browser time-zone data must be correct. The frontend does not synchronize the operating-system clock. `CSSUTimeSignal.preview()`, `getState()`, `boundaryAt(date)`, `isActive()`, and `destroy()` are developer interfaces, not viewer interactions.
 
@@ -233,12 +237,14 @@ node --check update.js
 
 Node is a development check, not a runtime dependency. Syntax checks do not verify behavior. Check these behaviors when the relevant module changes:
 
+Run the restored clock and module-boundary regressions from `frontend/` with `node --test tests/*.test.mjs`. They cover exact ten-minute deadlines, late callbacks without drift, completed-slot deduplication, preview preemption, page restoration, a 144-signal day, 20-second playback, timezone/date boundaries, and event/clock independence.
+
 - All nine product pictures load locally; duplicated ticker groups have identical width and loop without a gap.
 - Posters and notices rotate automatically, with no buttons, hover pauses, input handlers, or blocking dialogs.
-- Toronto hour/half-hour timing, the 1+4+4 city order, 14-second return, midnight/date changes, India offset, daylight-saving boundaries, and reload deduplication remain correct.
+- One-shot Toronto ten-minute deadlines with no idle polling, the 1+4+4 city order, 20-second return, midnight/date changes, India offset, daylight-saving boundaries, and completed-slot deduplication remain correct.
 - Activity edits and rejected data updates do not reset an active broadcast; each player runs without the other's API.
 - The lifecycle notifications pause the event player and resume the same event with a fresh interval.
 - Unchanged, changed, empty, failed, and timed-out version responses behave correctly; refreshed assets are new under the actual Nginx headers.
 - All release references resolve, the ZIP opens correctly, its root is correct, and production version metadata is device-generated.
 
-The prototype has had browser checks of its 1080p layouts, assets, grouped clock display, and return to the poster. Development simulations covered timing, time zones, schedule boundaries, module separation, and version checking. Those observations do not replace a target-device acceptance run. ARM frame rate, GPU/driver behavior, production Nginx/service-worker migration, reboot recovery, and long-duration unattended stability must be verified on the Orange Pi before calling a release production-ready.
+The prototype has had browser checks of its 1080p layouts, assets, grouped clock display, and return to the poster. Development simulations covered timing, time zones, schedule boundaries, module separation, and version checking. The clock implementation and regression tests were restored from the owner-supplied previous `cssu-signage.zip` version (ten-minute scheduling, 20-second broadcast), retaining the current November event posters. Those observations do not replace a target-device acceptance run. ARM frame rate, GPU/driver behavior, production Nginx/service-worker migration, reboot recovery, and long-duration unattended stability must be verified on the Orange Pi before calling a release production-ready.

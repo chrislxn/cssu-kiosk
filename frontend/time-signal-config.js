@@ -2,7 +2,7 @@
    This file does not depend on the event player or its data. */
 window.CSSU_TIME_SIGNAL_CONFIG = {
   enabled: true,
-  durationSeconds: 14,
+  durationSeconds: 20,
   cities: [
     { name: "Toronto", code: "YYZ", region: "CANADA", timezone: "America/Toronto" },
     { name: "Los Angeles", code: "LAX", region: "UNITED STATES", timezone: "America/Los_Angeles" },

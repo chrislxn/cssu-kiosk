@@ -138,10 +138,10 @@ Preserve the television-broadcast character: a lime diagonal opening sweep, larg
 
 | Page | Cities, left to right | Approved time |
 | --- | --- | --- |
-| 1 | Toronto alone | 0–3.4 s, including entry |
-| 2 | Los Angeles, New York, Shanghai, London | 3.4–8.4 s |
-| 3 | Tokyo, Seoul, New Delhi, Sydney | 8.4–13.4 s |
-| Exit | Restore the normal poster | 13.4–14 s |
+| 1 | Toronto alone | 0–5 s, including entry |
+| 2 | Los Angeles, New York, Shanghai, London | 5–12.2 s |
+| 3 | Tokyo, Seoul, New Delhi, Sydney | 12.2–19.4 s |
+| Exit | Restore the normal poster | 19.4–20 s |
 
 The last two pages show **four tall columns side by side**, not four rows or a 2 × 2 grid. The cities within a page remain visible together. Do not return to one rapid flip per city.
 
@@ -160,7 +160,7 @@ Each city shows its name, three-letter location code, region/country label, 24-h
 
 The group area runs from x = 87 to x = 1833, with four equal columns of about 436.5 px. It begins at y = 263 and ends 218 px above the canvas bottom. Separate columns with subtle vertical rules; do not enclose them in cards. The background globe is decorative and must stay quiet behind the numbers.
 
-Scheduling is anchored to `America/Toronto` at `:00` and `:30`. Use IANA timezone identifiers and the browser's timezone rules, including daylight saving and New Delhi's half-hour offset. Do not encode fixed inter-city hour differences. The time signal remains silent; adding audio is a separate product decision.
+Scheduling is anchored to `America/Toronto` at `:00`, `:10`, `:20`, `:30`, `:40`, and `:50`. Use IANA timezone identifiers and the browser's timezone rules, including daylight saving and New Delhi's half-hour offset. Do not encode fixed inter-city hour differences. The time signal remains silent; adding audio is a separate product decision.
 
 ## 7. Motion and timing
 
@@ -193,7 +193,7 @@ Respect `prefers-reduced-motion`. The current implementation suppresses poster/p
 
 Keep the runtime buildless and dependency-free. All render-essential images, styles, scripts, and fonts must be local. Preserve relative paths and the existing Content Security Policy. Render editable text through text nodes / `textContent`, not untrusted HTML.
 
-Maintain the clock/event module boundary described in [README.md](README.md). A normal event or shop edit belongs in `content.js`; it must not change the clock config, its timers, its storage key, or the 14-second sequence. Shared canvas, logo, and global-style changes must be verified in both normal and broadcast modes.
+Maintain the clock/event module boundary described in [README.md](README.md). A normal event or shop edit belongs in `content.js`; it must not change the clock config, its timers, its storage key, or the 20-second sequence. Shared canvas, logo, and global-style changes must be verified in both normal and broadcast modes.
 
 Do not enable the optional service worker casually, remove the updater, add external APIs, or move operating-system responsibilities into the page. The provided [deployment contract](docs/DEPLOYMENT-CONTRACT.md) governs production packaging and device-side update behavior.
 
@@ -206,7 +206,7 @@ A design review should answer these questions with the rendered result:
 3. Are the headline, product names/prices, and clock values readable at 1920 × 1080 without clipping?
 4. Do all product pictures and official brand files load from the bundle?
 5. Do the two world-time groups remain four simultaneous portrait columns?
-6. Does the complete 14-second signal return to the current event and resume the ribbon?
+6. Does the complete 20-second signal return to the current event and resume the ribbon?
 7. Does the result still work offline and without any input device?
 
 Document material deviations and get direction from the owner when a requested change conflicts with an approved product decision. Do not silently replace the established visual system during routine maintenance.

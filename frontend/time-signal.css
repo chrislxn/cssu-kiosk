@@ -1,6 +1,6 @@
-/* The entire broadcast is idle and hidden outside its fourteen-second slot. */
+/* The entire broadcast is idle and hidden outside its twenty-second slot. */
 .time-signal[hidden]{display:none}
-.time-signal{position:absolute;inset:0;z-index:20;background:#091e28;color:#f3f5ea;overflow:hidden;pointer-events:none;--signal-duration:14s;--signal-accent:#d4f48a;animation:signal-arrive .42s ease-out both}
+.time-signal{position:absolute;inset:0;z-index:20;background:#091e28;color:#f3f5ea;overflow:hidden;pointer-events:none;--signal-duration:20s;--signal-accent:#d4f48a;animation:signal-arrive .42s ease-out both}
 .signal-shutter{position:absolute;inset:-20px;z-index:8;background:#d4f48a;animation:signal-shutter .65s cubic-bezier(.65,0,.25,1) both;transform:translateX(110%) skewX(-12deg)}
 .signal-shutter::after{content:'';position:absolute;right:-90px;top:0;bottom:0;width:55px;background:#f3f5ea}
 .signal-header{position:absolute;left:82px;right:82px;top:47px;display:flex;align-items:center;justify-content:space-between;z-index:4}
