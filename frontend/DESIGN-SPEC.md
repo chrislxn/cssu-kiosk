@@ -98,6 +98,8 @@ Headline line-height, tracking, and safe areas are tuned for the supplied short 
 
 Prefer editing copy to shrinking important text. Long strings require visual verification on the canvas. Keep `SAMPLE EVENT`, TBD metadata, and demo-price labels until the owner explicitly approves real content.
 
+For owner-approved real events, `isSample: false` removes only the event's sample label and accessible sample suffix. Omitted or `true` retains sample labeling. Real metadata replaces TBD copy; the independent demo-price disclaimer stays until approved separately. A neutral standby poster appears when all events expire.
+
 ## 5. Product ribbon
 
 The bottom ribbon is the only dedicated shop area. Each item contains a small local illustration, a name, and a price. Do not substitute generic separators for the product pictures.
