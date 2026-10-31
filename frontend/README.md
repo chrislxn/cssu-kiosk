@@ -129,7 +129,9 @@ Use short, two-line titles and one-sentence descriptions. [DESIGN-SPEC.md](DESIG
 
 ### Current event content and provenance
 
-The two owner-supplied Instagram screenshots replace the three fictional demo posters. Copy uses the existing themes and local illustrations; those illustrations are decorative, not the original event artwork.
+The two owner-supplied Instagram screenshots replace the three fictional demo posters. Each uses the shared poster composition with a reference-inspired event palette and an original local SVG illustration; the illustrations are decorative, not the original event artwork. `fumbles` pairs pale blue, navy, cloud white, and a peach repair motif with `microphone.svg`. `bytes` pairs sky blue and yellow-green with `world-food.svg` (world plate, food, and flight route). The original `code`, `play`, and `build` themes remain available. Theme and art values use separate internal allowlists in `app.js`.
+
+The current poster theme is reflected in `#screen[data-poster-theme]` so the shared masthead and notices stay legible on a light poster. These palette rules target only the poster's masthead/notice/progress, not the independent time-signal overlay; standby restores the original dark palette. No event-specific motion, remote resources, or font dependencies are introduced. The optional worker remains disabled; its shell manifest would need the event SVGs added and migration verification before any future opt-in.
 
 | Event | Toronto date/time | Venue | Poster details |
 | --- | --- | --- | --- |

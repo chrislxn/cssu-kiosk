@@ -66,6 +66,17 @@ Use the bundled official logo files, with provenance retained in [ASSET-SOURCES.
 
 Keep contrast high for headlines, times, product names, and prices. Secondary labels can be subdued, but essential content must not depend on faint text or colour alone. Avoid heavy shadows, glass effects, blur, and ornamental cards.
 
+### November event palettes
+
+At the owner's request, the November posters echo their supplied promotional screenshots while preserving the canvas, two-line headline scale, local flat illustration treatment, masthead, and single lime price ribbon.
+
+| Theme | Palette and motif |
+| --- | --- |
+| `fumbles` | Pale blue `#c9e8ec` → `#8bbfd5`, navy ink `#173f58`, blue accent `#1c6286`; microphone, cloud, peach repair motif, and a fine inset frame |
+| `bytes` | Sky blue `#216eab` → `#114775`, off-white text, yellow-green accent `#e7f16f`; globe-shaped plate, food, and flight route |
+
+Light posters use the unmodified black CSSU logo with navy masthead, clock, notice, and progress text. Dark posters retain the white logo. Event palette selectors must not recolour the separate world-clock overlay. All decorative art is static local SVG; existing motion and price-ribbon styling remain unchanged.
+
 ## 4. Typography
 
 Use the existing system stack: `Arial, Helvetica, sans-serif`. No network font requests are permitted. A future custom font must be bundled locally and checked for size, loading behavior, and legibility.

@@ -34,7 +34,7 @@ window.CSSU_CONTENT = {
   ],
   slides: [
     {
-      id: "fumbles-failures", category: "CSSU × WiCS", theme: "build", art: "build", isSample: false,
+      id: "fumbles-failures", category: "CSSU × WiCS", theme: "fumbles", art: "microphone", isSample: false,
       title: ["Fumbles &", "Failures"], accentLine: 1,
       description: "Profs, grad students & undergrads.",
       eventName: "Fumbles & Failures", shortTitle: "Fumbles & Failures", shortDetail: "RSVP via @uoftcssu bio",
@@ -42,7 +42,7 @@ window.CSSU_CONTENT = {
       startsAt: null, endsAt: "2026-11-03T16:00:00-05:00", schedule: null
     },
     {
-      id: "bytes-world", category: "CSSU SOCIAL", theme: "play", art: "play", isSample: false,
+      id: "bytes-world", category: "CSSU SOCIAL", theme: "bytes", art: "world-food", isSample: false,
       title: ["Bytes Around", "the World"], accentLine: 1,
       description: "Free food from around the world.",
       eventName: "Bytes Around the World", shortTitle: "Bytes Around the World", shortDetail: "Free food · BA3200",
