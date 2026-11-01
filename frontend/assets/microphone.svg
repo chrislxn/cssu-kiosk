@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 360" fill="none">
+  <!-- Original flat illustration: speaker microphone, cloud, and repair motif. -->
+  <g stroke="#246185" opacity=".18">
+    <circle cx="180" cy="180" r="155"/><circle cx="180" cy="180" r="120"/>
+    <path d="M20 180h320M180 20v320"/>
+  </g>
+  <path d="M44 269c-12-42 12-75 52-75 8-31 53-41 78-15 33-15 70 8 70 39 45-5 66 39 40 66-31 31-228 31-240-15Z" fill="#e7f6f3"/>
+  <path d="M28 291c61 22 116 18 168-11 59-32 117-15 134-50" stroke="#79afc8" stroke-width="3" stroke-dasharray="8 9" stroke-linecap="round"/>
+  <ellipse cx="180" cy="180" rx="168" ry="70" transform="rotate(-32 180 180)" stroke="#397e9e" opacity=".4"/>
+  <g transform="rotate(-32 206 165)">
+    <path d="M178 143h57l-7 137c-.5 12-43 12-44 0Z" fill="#205572"/>
+    <path d="M178 143h28v142c-9 0-20-1-22-6Z" fill="#153e59"/>
+    <path d="M190 269h32v9h-32z" fill="#a9dce7"/>
+    <rect x="163" y="49" width="86" height="108" rx="43" fill="#214f6a"/>
+    <path d="M171 82h70M165 95h82M165 108h82M169 121h74M177 134h58M184 62v84M198 52v99M212 52v99M226 59v87M239 72v59" stroke="#91c3d5" stroke-width="2.2"/>
+    <path d="M162 145h88v13h-88z" fill="#d9efee"/>
+    <path d="M206 286c0 22-12 29-30 34" stroke="#205572" stroke-width="4" stroke-linecap="round"/>
+  </g>
+  <g transform="rotate(-33 78 98)">
+    <rect x="24" y="76" width="108" height="43" rx="20" fill="#efc3ae"/>
+    <rect x="65" y="77" width="26" height="41" rx="5" fill="#f5d6c6"/>
+    <g fill="#c28f7c"><circle cx="40" cy="89" r="1.5"/><circle cx="51" cy="89" r="1.5"/><circle cx="40" cy="103" r="1.5"/><circle cx="51" cy="103" r="1.5"/><circle cx="104" cy="89" r="1.5"/><circle cx="115" cy="89" r="1.5"/><circle cx="104" cy="103" r="1.5"/><circle cx="115" cy="103" r="1.5"/></g>
+  </g>
+  <path d="M67 171v22M56 182h22" stroke="#2b6a8b" stroke-width="3"/>
+  <path d="m284 287 10-10 10 10m-20 16 10-10 10 10" stroke="#397e9e" stroke-width="3"/>
+  <circle cx="306" cy="94" r="7" fill="#eaf7f4"/>
+</svg>

@@ -1,10 +1,10 @@
 # CSSU Kiosk — Frontend Design Specification
 
-**Version:** 1.0  
-**Baseline:** 24 October 2026  
+**Version:** 1.1<br>
+**Baseline:** 24 October 2026; revised 31 October 2026<br>
 **Scope:** the approved poster display and three-page time signal implemented in this project
 
-This specification records the current visual and behavioral decisions. It guides incremental maintenance; it is not a request to redesign the screen. See [README.md](README.md) for architecture and operations, and [AGENTS.md](AGENTS.md) for AI contributor instructions.
+This specification records the current visual and behavioral decisions. It guides incremental maintenance; it is not a request to redesign the screen. See [README.md](README.md) for architecture and operations, [AGENTS.md](AGENTS.md) for AI contributor instructions, and [the release acceptance checklist](docs/DEPLOYMENT-CONTRACT.md#11-release-acceptance-tests) for verification and remaining device checks.
 
 ## 1. Audience and viewing conditions
 
@@ -66,6 +66,19 @@ Use the bundled official logo files, with provenance retained in [ASSET-SOURCES.
 
 Keep contrast high for headlines, times, product names, and prices. Secondary labels can be subdued, but essential content must not depend on faint text or colour alone. Avoid heavy shadows, glass effects, blur, and ornamental cards.
 
+### November event palettes
+
+At the owner's request, the November posters echo their supplied promotional screenshots while preserving the canvas, two-line headline scale, local flat illustration treatment, masthead, and single lime price ribbon.
+
+| Theme | Palette and motif |
+| --- | --- |
+| `fumbles` | Pale blue `#c9e8ec` → `#8bbfd5`, navy ink `#173f58`, blue accent `#1c6286`; microphone, cloud, peach repair motif, and a fine inset frame |
+| `bytes` | Sky blue `#216eab` → `#114775`, off-white text, yellow-green accent `#e7f16f`; globe-shaped plate, food, and flight route |
+
+Light posters use the unmodified black CSSU logo with navy masthead, clock, notice, and progress text. Dark posters retain the white logo. Event palette selectors must not recolour the separate world-clock overlay. All decorative art is static local SVG; existing motion and price-ribbon styling remain unchanged.
+
+Activities should be recognisable as new content through their palette and relevant illustration while retaining the shared design language. Do not substitute the old generic blocks or game artwork for these two event illustrations. Keep supporting text legible across the full background gradient, including dates, venue, RSVP, notices, and the integrated clock. Verify both directions of the light/dark poster transition and restoration after a time signal.
+
 ## 4. Typography
 
 Use the existing system stack: `Arial, Helvetica, sans-serif`. No network font requests are permitted. A future custom font must be bundled locally and checked for size, loading behavior, and legibility.
@@ -100,6 +113,19 @@ Prefer editing copy to shrinking important text. Long strings require visual ver
 
 For owner-approved real events, `isSample: false` removes only the event's sample label and accessible sample suffix. Omitted or `true` retains sample labeling. Real metadata replaces TBD copy; the independent demo-price disclaimer stays until approved separately. A neutral standby poster appears when all events expire.
 
+### Event validity and standby
+
+Use explicit-offset ISO timestamps for absolute validity, with `startsAt` inclusive and `endsAt` exclusive. `startsAt: null` allows immediate promotion, rather than withholding a poster until the event begins. The current November posters have no recurring display window. The event and its corresponding notice must expire together.
+
+| Current event | Advertised Toronto time | Exclusive expiry |
+| --- | --- | --- |
+| Fumbles & Failures | November 3, 2026, 1–4 PM; BA3200 | `2026-11-03T16:00:00-05:00` |
+| Bytes Around the World | November 6, 2026, 3–5 PM; BA3200 | `2026-11-06T17:00:00-05:00` |
+
+The supplied posters omit a year; 2026 follows the owner's October 31 maintenance context, as recorded in README.md. Toronto is on EST for these event dates. Event facts, prices, and validity must not change as a side effect of a visual edit.
+
+Eligibility refreshes once per second without a release or reload. After the first expiry, only Bytes remains. After the second, show the original dark-teal `code` standby poster: “Your space.” / “Your people.”, with “No events are scheduled right now.” and the community-board tag. Do not restore fictional event posters. Expired data stays in the source but is excluded from playback. Keep the price ribbon, ordinary notices, integrated clock, and scheduled world-time broadcasts running. If expiry happens during a broadcast, complete the broadcast and reveal the eligible poster or standby afterward.
+
 ## 5. Product ribbon
 
 The bottom ribbon is the only dedicated shop area. Each item contains a small local illustration, a name, and a price. Do not substitute generic separators for the product pictures.
@@ -127,10 +153,10 @@ Preserve the television-broadcast character: a lime diagonal opening sweep, larg
 
 | Page | Cities, left to right | Approved time |
 | --- | --- | --- |
-| 1 | Toronto alone | 0–3.4 s, including entry |
-| 2 | Los Angeles, New York, Shanghai, London | 3.4–8.4 s |
-| 3 | Tokyo, Seoul, New Delhi, Sydney | 8.4–13.4 s |
-| Exit | Restore the normal poster | 13.4–14 s |
+| 1 | Toronto alone | 0–5 s, including entry |
+| 2 | Los Angeles, New York, Shanghai, London | 5–12.2 s |
+| 3 | Tokyo, Seoul, New Delhi, Sydney | 12.2–19.4 s |
+| Exit | Restore the normal poster | 19.4–20 s |
 
 The last two pages show **four tall columns side by side**, not four rows or a 2 × 2 grid. The cities within a page remain visible together. Do not return to one rapid flip per city.
 
@@ -149,7 +175,11 @@ Each city shows its name, three-letter location code, region/country label, 24-h
 
 The group area runs from x = 87 to x = 1833, with four equal columns of about 436.5 px. It begins at y = 263 and ends 218 px above the canvas bottom. Separate columns with subtle vertical rules; do not enclose them in cards. The background globe is decorative and must stay quiet behind the numbers.
 
-Scheduling is anchored to `America/Toronto` at `:00` and `:30`. Use IANA timezone identifiers and the browser's timezone rules, including daylight saving and New Delhi's half-hour offset. Do not encode fixed inter-city hour differences. The time signal remains silent; adding audio is a separate product decision.
+Scheduling is anchored to `America/Toronto` at `:00`, `:10`, `:20`, `:30`, `:40`, and `:50`. Use IANA timezone identifiers and the browser's timezone rules, including daylight saving and New Delhi's half-hour offset. Do not encode fixed inter-city hour differences. The time signal remains silent; adding audio is a separate product decision.
+
+The approved broadcast lasts **20 seconds**. Reserve each absolute ten-minute deadline with one one-shot timer; do not use an idle polling interval, a grace window, or a deliberate trigger delay. A registered callback delivered late still runs once and then reserves the next actual boundary, avoiding cumulative drift. Opening, returning to the foreground, or restoring a page after a boundary waits for the next boundary. A real scheduled signal takes precedence over an operator preview. Deduplicate only completed scheduled slots; repeated DST hours have distinct absolute slot IDs. Browser scheduling is subject to event-loop responsiveness and is not a hard real-time guarantee.
+
+During the broadcast, suspend poster/notice advancement and pause the price ribbon. At exit restore the current eligible poster, its light/dark masthead colours, and the prior accessibility attributes, with a fresh full poster interval. The regular poster interval remains **14 seconds**; it is separate from the **20-second broadcast duration** and the **10-minute broadcast cadence**. The device's 30-minute release check and the browser's 10-second version check are separate deployment mechanisms.
 
 ## 7. Motion and timing
 
@@ -182,7 +212,7 @@ Respect `prefers-reduced-motion`. The current implementation suppresses poster/p
 
 Keep the runtime buildless and dependency-free. All render-essential images, styles, scripts, and fonts must be local. Preserve relative paths and the existing Content Security Policy. Render editable text through text nodes / `textContent`, not untrusted HTML.
 
-Maintain the clock/event module boundary described in [README.md](README.md). A normal event or shop edit belongs in `content.js`; it must not change the clock config, its timers, its storage key, or the 14-second sequence. Shared canvas, logo, and global-style changes must be verified in both normal and broadcast modes.
+Maintain the clock/event module boundary described in [README.md](README.md). A normal event or shop edit belongs in `content.js`; it must not change the clock config, its timers, its storage key, or the 20-second sequence. Shared canvas, logo, and global-style changes must be verified in both normal and broadcast modes.
 
 Do not enable the optional service worker casually, remove the updater, add external APIs, or move operating-system responsibilities into the page. The provided [deployment contract](docs/DEPLOYMENT-CONTRACT.md) governs production packaging and device-side update behavior.
 
@@ -195,7 +225,9 @@ A design review should answer these questions with the rendered result:
 3. Are the headline, product names/prices, and clock values readable at 1920 × 1080 without clipping?
 4. Do all product pictures and official brand files load from the bundle?
 5. Do the two world-time groups remain four simultaneous portrait columns?
-6. Does the complete 14-second signal return to the current event and resume the ribbon?
+6. Does the complete 20-second signal return to the current event and resume the ribbon?
 7. Does the result still work offline and without any input device?
+8. Are both November palettes recognisable, with legible masthead/metadata, matching local artwork, and no palette leakage into the world-clock overlay?
+9. Do both posters and their notices expire at the specified Toronto end times, leaving a working standby page after the final expiry?
 
 Document material deviations and get direction from the owner when a requested change conflicts with an approved product decision. Do not silently replace the established visual system during routine maintenance.

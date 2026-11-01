@@ -1,4 +1,4 @@
-/* Toronto :00 / :30 broadcast. Uses the device clock and browser IANA time zones.
+/* Toronto :00 / :10 / :20 / :30 / :40 / :50 broadcast. Uses the device clock and browser IANA time zones.
    No audio, external requests, user input, canvas, or frame-by-frame JS loop.
    Preview once: index.html?time-signal-preview=1 */
 (() => {
@@ -18,8 +18,10 @@
   ];
   const SLOT_KEY = 'cssu:time-signal:last-slot';
   const toronto = new Intl.DateTimeFormat('en-GB',{timeZone:'America/Toronto',minute:'2-digit',second:'2-digit'});
-  let active = false, disposed = false, current = 0, beganAt = 0, duration = 14000;
-  let scheduleTimer, clockTimer, lastSlot = null, stageTimers = [];
+  let active = false, disposed = false, current = 0, beganAt = 0, duration = 20000;
+  let scheduleTimer, clockTimer, lastSlot = null, activeSlot = null, stageTimers = [];
+  let nextScheduledAt = 0, lastScheduledAt = 0, dispatchDelayMs = 0, lastOutcome = 'initializing';
+  let preparedSignature = null;
   let cards = [], pages = [], pageCities = [], routes = [], formatters = [], hiddenUnderlay = [];
   const element = (tag,cls,text) => {
     const e = document.createElement(tag); if (cls) e.className = cls;
@@ -33,7 +35,7 @@
   function configuration() {
     const config = window.CSSU_TIME_SIGNAL_CONFIG || {};
     const seconds = Number(config.durationSeconds);
-    const result = {enabled:config.enabled !== false,duration:Number.isFinite(seconds) && seconds >= 7 && seconds <= 30 ? seconds*1000 : 14000,cities:DEFAULT_CITIES};
+    const result = {enabled:config.enabled !== false,duration:Number.isFinite(seconds) && seconds >= 7 && seconds <= 30 ? seconds*1000 : 20000,cities:DEFAULT_CITIES};
     if (Array.isArray(config.cities) && config.cities.length === 9) {
       try {
         for (const city of config.cities) {
@@ -52,16 +54,16 @@
     const parts = Object.fromEntries(toronto.formatToParts(date).map(p => [p.type,p.value]));
     const minute = Number(parts.minute), second = Number(parts.second);
     return {
-      due:minute%30 === 0 && second < 2,
-      slot:String(Math.floor(date.getTime()/1800000)),
-      // Align a single timer precisely to the next Toronto :00 or :30.
-      delay:(30-minute%30)*60000-second*1000-date.getMilliseconds()
+      due:minute%10 === 0 && second === 0 && date.getMilliseconds() === 0,
+      slot:String(Math.floor(date.getTime()/600000)),
+      // Align a single timer precisely to the next Toronto ten-minute boundary.
+      delay:(10-minute%10)*60000-second*1000-date.getMilliseconds()
     };
   }
   function render(cities) {
     const header = element('header','signal-header');
     const logo = element('img','signal-logo'); logo.src = 'assets/cssu-logo.webp'; logo.alt = 'CSSU'; logo.width=251; logo.height=70;
-    header.append(logo,element('span','signal-header-title','WORLD CLOCK'),element('span','signal-header-note','ON THE HOUR & HALF HOUR'));
+    header.append(logo,element('span','signal-header-title','WORLD CLOCK'),element('span','signal-header-note','EVERY 10 MINUTES'));
     const globe = element('img','signal-globe'); globe.src='assets/world-clock.svg'; globe.alt=''; globe.width=850; globe.height=850;
     const deck = element('div','signal-cards'), route = element('div','signal-route');
     route.setAttribute('aria-hidden','true');
@@ -98,6 +100,10 @@
     const footer=element('div','signal-bottom'); footer.append(element('span','','ONE COMMUNITY. DIFFERENT TIME ZONES.'),element('span','','CSSU / TIME SIGNAL'));
     overlay.replaceChildren(globe,element('div','signal-grid-line'),header,deck,route,footer,element('div','signal-progress'),element('div','signal-shutter'));
   }
+  function prepare(config) {
+    const signature=JSON.stringify(config.cities);
+    if (signature !== preparedSignature) { render(config.cities); preparedSignature=signature; }
+  }
   function updateClocks() {
     const now = new Date();
     cards.forEach((view,i) => {
@@ -115,57 +121,94 @@
     cards.forEach(view => {view.card.classList.toggle('is-current',view.pageIndex===i);view.card.setAttribute('aria-hidden',String(view.pageIndex!==i));});
     routes.forEach((stop,j) => {stop.classList.toggle('is-current',j===i);stop.classList.toggle('is-past',j<i);});
   }
-  function finish() {
+  function finish(completed = false) {
     if (!active) return;
     stageTimers.forEach(clearTimeout); stageTimers=[]; clearInterval(clockTimer);
     active=false; overlay.hidden=true; overlay.classList.remove('is-closing'); screen.classList.remove('time-signal-active');
+    if (activeSlot !== null) {
+      if (completed) {
+        // Persist only a fully displayed scheduled signal; previews never mark a slot.
+        try { sessionStorage.setItem(SLOT_KEY,activeSlot); } catch (_) {}
+      } else if (lastSlot === activeSlot) lastSlot = null;
+      activeSlot = null;
+    }
     hiddenUnderlay.forEach(([node,value]) => {if(value === null) node.removeAttribute('aria-hidden'); else node.setAttribute('aria-hidden',value);}); hiddenUnderlay=[];
     document.dispatchEvent(new CustomEvent('cssu:time-signal-end'));
   }
-  function start() {
+  function start(slot = null) {
     if (active || disposed || document.hidden) return false;
     const config=configuration(); if (!config.enabled) return false;
-    duration=config.duration; render(config.cities); beganAt=Date.now(); active=true;
+    duration=config.duration; prepare(config); beganAt=Date.now(); activeSlot=slot; active=true;
     hiddenUnderlay=[...screen.children].filter(e => e !== overlay).map(e => [e,e.getAttribute('aria-hidden')]);
     hiddenUnderlay.forEach(([node]) => node.setAttribute('aria-hidden','true'));
     overlay.style.setProperty('--signal-duration',`${duration}ms`); overlay.classList.remove('is-closing');
     screen.classList.add('time-signal-active'); overlay.hidden=false; stage(0);
-    // At 14 seconds: Toronto 3.4s; each four-city board 5s; exit 0.6s.
-    [3.4/14,8.4/14].forEach((fraction,i) => stageTimers.push(setTimeout(() => stage(i+1),Math.round(duration*fraction))));
+    // At 20 seconds: Toronto 5s; each four-city board 7.2s; exit 0.6s.
+    [5/20,12.2/20].forEach((fraction,i) => stageTimers.push(setTimeout(() => stage(i+1),Math.round(duration*fraction))));
     stageTimers.push(setTimeout(() => overlay.classList.add('is-closing'),duration-600));
-    stageTimers.push(setTimeout(finish,duration)); clockTimer=setInterval(updateClocks,1000);
+    stageTimers.push(setTimeout(() => finish(true),duration)); clockTimer=setInterval(updateClocks,1000);
     document.dispatchEvent(new CustomEvent('cssu:time-signal-start',{detail:{durationMs:duration}}));
     return true;
   }
-  function check() {
-    if (disposed) return;
-    const slot=boundary(new Date());
-    if (slot.due && slot.slot !== lastSlot && !document.hidden && configuration().enabled) {
-      lastSlot=slot.slot;
-      try { sessionStorage.setItem(SLOT_KEY,lastSlot); } catch (_) {}
-      start();
-    }
+  function armNextBoundary(includeCurrent = true) {
     clearTimeout(scheduleTimer);
-    scheduleTimer=setTimeout(check,Math.max(10,slot.delay));
+    if (disposed || document.hidden) { nextScheduledAt=0; return; }
+    const now=new Date(), timing=boundary(now);
+    nextScheduledAt=now.getTime()+(includeCurrent && timing.due ? 0 : timing.delay);
+    const target=nextScheduledAt;
+    // One deadline, not a polling interval. The captured target is the due task.
+    scheduleTimer=setTimeout(() => atBoundary(target),Math.max(0,target-Date.now()));
+  }
+  function atBoundary(target) {
+    if (disposed) return;
+    const now=Date.now();
+    if (now < target) { armNextBoundary(); return; }
+    lastScheduledAt=target; dispatchDelayMs=now-target;
+    if (document.hidden) lastOutcome='hidden-at-deadline';
+    else {
+      const slot=String(Math.floor(target/600000));
+      if (slot === lastSlot) lastOutcome='slot-completed';
+      else {
+        // An operator preview must never postpone the real scheduled broadcast.
+        if (active) finish();
+        if (start(slot)) { lastSlot=slot; lastOutcome='started'; }
+        else lastOutcome='disabled';
+      }
+    }
+    // Always schedule the next actual ten-minute boundary, never "10 minutes after callback".
+    armNextBoundary(false);
   }
   function visibility() {
-    if (document.hidden) finish();
-    else { if (active && Date.now()-beganAt >= duration) finish(); check(); }
+    if (document.hidden) {
+      finish(); clearTimeout(scheduleTimer); nextScheduledAt=0;
+    } else armNextBoundary();
   }
   function destroy() {
-    disposed=true; finish(); clearTimeout(scheduleTimer);
+    disposed=true; finish(); clearTimeout(scheduleTimer); nextScheduledAt=0;
     document.removeEventListener('visibilitychange',visibility);
-    window.removeEventListener('pagehide',destroy); overlay.remove();
+    window.removeEventListener('pagehide',pagehide);
+    window.removeEventListener('pageshow',pageshow); overlay.remove();
+  }
+  function pagehide(event) {
+    if (!event.persisted) { destroy(); return; }
+    // BFCache restoration does not execute the scripts again, so retain the module.
+    finish(); clearTimeout(scheduleTimer); nextScheduledAt=0;
+  }
+  function pageshow(event) {
+    if (event.persisted && !disposed) armNextBoundary();
   }
   window.CSSUTimeSignal=Object.freeze({
     isActive:() => active,
-    getState:() => ({active,page:active ? current+1 : null,cities:active ? pageCities[current].map(city => city.name) : [],startedAt:beganAt,durationMs:duration}),
-    preview:start,
+    getState:() => ({active,page:active ? current+1 : null,cities:active ? pageCities[current].map(city => city.name) : [],startedAt:beganAt,durationMs:duration,nextScheduledAt,lastScheduledAt,dispatchDelayMs,lastOutcome}),
+    preview:() => start(),
     boundaryAt:date => boundary(new Date(date)),
     destroy
   });
-  document.addEventListener('visibilitychange',visibility); window.addEventListener('pagehide',destroy);
+  document.addEventListener('visibilitychange',visibility);
+  window.addEventListener('pagehide',pagehide); window.addEventListener('pageshow',pageshow);
+  // Build local artwork and clock formatters before the scheduled deadline.
+  prepare(configuration());
   // A one-shot operator preview is automatic and adds no on-screen controls.
   if (new URLSearchParams(location.search).get('time-signal-preview') === '1') start();
-  check();
+  armNextBoundary();
 })();

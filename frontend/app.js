@@ -4,7 +4,8 @@
   'use strict';
   const $ = id => document.getElementById(id);
   const CACHE_KEY = 'cssu-signage:content:v1';
-  const ART = ['code', 'play', 'build'];
+  const ART = ['code', 'play', 'build', 'microphone', 'world-food'];
+  const THEMES = ['code', 'play', 'build', 'fumbles', 'bytes'];
   const PRODUCT_ICONS = new Set(['coffee','cola','energy','bolt','chips','chocolate','icecream','gum','mini-chocolate']);
   let content, formatTime, formatDate, formatZone, formatSchedule;
   let activeSlides = [], activeAnnouncements = [], index = 0, announcementIndex = 0;
@@ -41,7 +42,7 @@
     copy.slides.forEach(s => {
       text(s.id, 32, 'slide id'); if (ids.has(s.id)) throw Error('Slide IDs must be unique'); ids.add(s.id);
       if (s.isSample != null && typeof s.isSample !== 'boolean') throw Error('isSample must be a boolean');
-      if (!ART.includes(s.art) || !ART.includes(s.theme)) throw Error('Unknown art/theme');
+      if (!ART.includes(s.art) || !THEMES.includes(s.theme)) throw Error('Unknown art/theme');
       if (!Array.isArray(s.title) || s.title.length !== 2) throw Error('Use two title lines');
       s.title.forEach(t => text(t, 22, 'title line'));
       if (![0, 1].includes(s.accentLine)) throw Error('accentLine must be 0 or 1');
@@ -115,6 +116,8 @@
   function show(nextIndex) {
     if (!activeSlides.length) return;
     index = (nextIndex + activeSlides.length) % activeSlides.length; started = performance.now();
+    // Only the poster masthead/notice inherit this palette; the clock overlay stays independent.
+    $('screen').dataset.posterTheme = activeSlides[index].theme;
     [...$('slides').children].forEach((slide,i) => { slide.classList.toggle('active',i === index); slide.setAttribute('aria-hidden',String(i !== index)); });
     [...$('slide-tracks').children].forEach((track,i) => {
       track.classList.remove('active');
