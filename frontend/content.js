@@ -48,11 +48,20 @@ window.CSSU_CONTENT = {
       eventName: "Bytes Around the World", shortTitle: "Bytes Around the World", shortDetail: "Free food · BA3200",
       meta: "Nov 6 · 3–5 PM · BA3200", tag: "FREE FOOD",
       startsAt: null, endsAt: "2026-11-06T17:00:00-05:00", schedule: null
+    },
+    {
+      id: "worlds-finals", category: "LEAGUE OF LEGENDS", theme: "worlds", art: "worlds-trophy", isSample: false,
+      title: ["LoL Worlds", "Watch Party"], accentLine: 1,
+      description: "Fan fest, free food & giveaways.",
+      eventName: "LoL Worlds Finals Fan Fest", shortTitle: "LoL Worlds Watch Party", shortDetail: "Fan fest · SF 1105 & 3202",
+      meta: "Nov 14 · 11 AM–7 PM · SF 1105 & 3202", tag: "UTES + UTLA · INTERCLUB",
+      startsAt: null, endsAt: "2026-11-14T19:00:00-05:00", schedule: null
     }
   ],
   announcements: [
     { text: "Fumbles & Failures · Nov 3, 1–4 PM · BA3200 · RSVP via @uoftcssu bio.", startsAt: null, endsAt: "2026-11-03T16:00:00-05:00", schedule: null },
     { text: "Bytes Around the World · Nov 6, 3–5 PM · BA3200 · Free food!", startsAt: null, endsAt: "2026-11-06T17:00:00-05:00", schedule: null },
+    { text: "LoL Worlds Finals · Nov 14, 11 AM–7 PM · SF 1105 & 3202 · Fan fest, food & giveaways.", startsAt: null, endsAt: "2026-11-14T19:00:00-05:00", schedule: null },
     { text: "Demo menu · Confirm current prices and availability at the counter.", startsAt: null, endsAt: null, schedule: null },
     { text: "Your community, on display. A space for projects, people and ideas.", startsAt: null, endsAt: null, schedule: null }
   ]

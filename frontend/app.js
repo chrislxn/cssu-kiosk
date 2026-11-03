@@ -4,8 +4,8 @@
   'use strict';
   const $ = id => document.getElementById(id);
   const CACHE_KEY = 'cssu-signage:content:v1';
-  const ART = ['code', 'play', 'build', 'microphone', 'world-food'];
-  const THEMES = ['code', 'play', 'build', 'fumbles', 'bytes'];
+  const ART = ['code', 'play', 'build', 'microphone', 'world-food', 'worlds-trophy'];
+  const THEMES = ['code', 'play', 'build', 'fumbles', 'bytes', 'worlds'];
   const PRODUCT_ICONS = new Set(['coffee','cola','energy','bolt','chips','chocolate','icecream','gum','mini-chocolate']);
   let content, formatTime, formatDate, formatZone, formatSchedule;
   let activeSlides = [], activeAnnouncements = [], index = 0, announcementIndex = 0;

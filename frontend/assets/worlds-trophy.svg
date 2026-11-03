@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 360" fill="none">
+  <!-- Original flat trophy illustration; not the promotional artwork or official trophy design. -->
+  <g stroke="#9ac6d4" opacity=".16">
+    <circle cx="180" cy="180" r="155"/><circle cx="180" cy="180" r="120"/>
+    <path d="M20 180h320M180 20v320"/>
+  </g>
+  <path d="m28 251 8-58 8 58v50H28Zm15 50V158l8-25 8 25v143Zm19 0V187l8-11 8 11v114Zm220 0V159l12-17 12 17v142Zm9-142V91l3-27 3 27v68Zm19 142V197l10-17 10 17v104Z" fill="#6da0b6" opacity=".2"/>
+  <ellipse cx="180" cy="180" rx="173" ry="74" transform="rotate(-31 180 180)" stroke="#9ac6d4" opacity=".42"/>
+  <ellipse cx="180" cy="309" rx="104" ry="14" fill="#0c2633"/>
+  <path d="M130 98H83l8 62 41 32 18-20-37-28-5-23h28m94-23h47l-8 62-41 32-18-20 37-28 5-23h-28" fill="#7da9bd"/>
+  <path d="M130 98H83l8 62 41 32m98-94h47l-8 62-41 32" stroke="#d2e2e7" stroke-width="4" stroke-linejoin="round"/>
+  <path d="m122 78 58 20 58-20-12 91-24 42h-44l-24-42Z" fill="#c5d8df"/>
+  <path d="m122 78 58 20v113h-22l-24-42Z" fill="#94b7c8"/>
+  <path d="m180 98 58-20-12 91-24 42h-22Z" fill="#e0e9e7"/>
+  <path d="m146 93 12 72 22 30 22-30 12-72-34 13Z" fill="#356b87"/>
+  <path d="m180 110 22 25v34l-22 21-22-21v-34Z" fill="#86d2eb"/>
+  <path d="m180 110 22 25-22 12-22-12Zm0 37v43l-22-21v-34Z" fill="#4c9fc3"/>
+  <path d="m180 110 22 25v34l-22 21-22-21v-34Z" stroke="#d6e8e8" stroke-width="2"/>
+  <path d="M159 211h42l-8 30 14 31h-54l14-31Z" fill="#c9dce1"/>
+  <path d="M159 211h21v61h-27l14-31Z" fill="#82adbf"/>
+  <path d="M142 269h76l12 21H130Z" fill="#e0e9e7"/>
+  <path d="M130 290h100v16H130Z" fill="#90b7c7"/>
+  <path d="M144 290h72v16h-72Z" fill="#bed4dc"/>
+  <path d="m180 49 14 17-14 16-14-16Z" fill="#86d2eb"/>
+  <path d="M180 36v-9m0 77v-9M148 66h-10m84 0h-10" stroke="#9ac6d4" stroke-width="2"/>
+  <path d="M66 93v24M54 105h24m225 121v24m-12-12h24" stroke="#a9cfdc" stroke-width="3"/>
+  <circle cx="279" cy="80" r="7" fill="#77c7e1"/>
+  <path d="m65 263 10-10 10 10m-20 16 10-10 10 10" stroke="#779fb1" stroke-width="3"/>
+</svg>

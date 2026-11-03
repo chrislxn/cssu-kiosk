@@ -2,8 +2,8 @@
 
 **Project:** CSSU Digital Signage  
 **Platform:** Orange Pi 3B / Armbian / Chromium Kiosk  
-**Document Version:** 1.1<br>
-**Revised:** 31 October 2026<br>
+**Document Version:** 1.2<br>
+**Revised:** 2 November 2026<br>
 **Deployment:** GitHub Releases → Local Nginx → Chromium  
 **Status:** Engineering requirements; target-device release acceptance pending
 
@@ -62,6 +62,7 @@ kiosk.zip
 │   ├── build.svg
 │   ├── microphone.svg
 │   ├── world-food.svg
+│   ├── worlds-trophy.svg
 │   ├── world-clock.svg
 │   └── products/        # All local product SVGs, including the fallback
 └── sw.js               # Optional; disabled by default
@@ -319,7 +320,7 @@ The screen should never intentionally become blank because an external resource 
 
 ### Approved poster and clock behavior
 
-Use [DESIGN-SPEC.md](../DESIGN-SPEC.md) for visual requirements and [README.md](../README.md) for the current content contract. The November posters use their approved pale-blue/navy microphone theme and sky-blue/yellow-green world-food theme within the existing 1920 × 1080 composition. Real events carry no sample-event label; the independent demo-price disclaimer remains.
+Use [DESIGN-SPEC.md](../DESIGN-SPEC.md) for visual requirements and [README.md](../README.md) for the current content contract. The November posters use their approved pale-blue/navy microphone, sky-blue/yellow-green world-food, and deep-teal/ice-blue/silver Worlds trophy themes within the existing 1920 × 1080 composition. Real events carry no sample-event label; the independent demo-price disclaimer remains.
 
 The integrated Toronto clock remains visible during normal playback. The independent world-time signal takes over at Toronto `:00`, `:10`, `:20`, `:30`, `:40`, and `:50`, lasting 20 seconds: Toronto for 5 seconds, the first four-city group for 7.2 seconds, the second four-city group for 7.2 seconds, and a 0.6-second exit. It is silent and restores the current eligible poster and price ribbon. The 14-second poster interval, 10-minute time-signal cadence, 10-second browser version poll, and device release-check timer are separate settings.
 
@@ -425,8 +426,8 @@ Before publishing a production Release, verify the following:
 
 ### Poster appearance and content
 
-- [ ] At 1920 × 1080, both event titles remain two lines at the approved 174 px size, with no clipping, overlap with the main illustration, or scrollbars.
-- [ ] Fumbles & Failures uses the pale-blue/navy palette and local microphone/cloud/repair illustration; Bytes Around the World uses the sky-blue/yellow-green palette and local world-food/flight illustration.
+- [ ] At 1920 × 1080, all three event titles remain two lines at the approved 174 px size, with no clipping, overlap with the main illustration, or scrollbars.
+- [ ] Fumbles & Failures uses the pale-blue/navy palette and local microphone/cloud/repair illustration; Bytes Around the World uses the sky-blue/yellow-green palette and local world-food/flight illustration; LoL Worlds uses the deep-teal/ice-blue/silver palette and local trophy illustration.
 - [ ] The original CSSU logo, shared composition, 112 px price ribbon, approved CAD prices, and demo-price labels are preserved.
 - [ ] Switching in both directions between light and dark posters updates the logo presentation, integrated clock, notices, and progress text with adequate contrast; standby restores the dark-teal palette.
 - [ ] Real events (`isSample: false`) omit visible and accessible sample-event labels; omitted/true retains both labels for sample content. Invalid updates leave the last valid content running.
@@ -447,14 +448,16 @@ Before publishing a production Release, verify the following:
 
 ### Expiry and standby
 
-Use the current owner-approved 2026 dates and Toronto EST offsets; the source posters omit a year, and the chosen year is documented in README.md.
+Use the current owner-approved 2026 dates and Toronto EST offsets; the first two source posters omit a year (documented in README.md); the Worlds listing explicitly gives 2026.
 
 | Test boundary | Required result |
 | --- | --- |
-| Immediately before `2026-11-03T16:00:00-05:00` | Both posters are eligible; the Fumbles notice remains eligible |
-| At/after `2026-11-03T16:00:00-05:00` | Fumbles and its notice are ineligible; the next eligibility refresh leaves Bytes as the only event |
+| Immediately before `2026-11-03T16:00:00-05:00` | All three posters are eligible; the Fumbles notice remains eligible |
+| At/after `2026-11-03T16:00:00-05:00` | Fumbles and its notice are ineligible; the next eligibility refresh leaves Bytes and Worlds |
 | Immediately before `2026-11-06T17:00:00-05:00` | Bytes and its notice remain eligible |
-| At/after `2026-11-06T17:00:00-05:00` | Bytes and its notice are ineligible; the next refresh selects standby with no expired-event notice |
+| At/after `2026-11-06T17:00:00-05:00` | Bytes and its notice are ineligible; the next refresh leaves Worlds as the only event |
+| Immediately before `2026-11-14T19:00:00-05:00` | Worlds and its notice remain eligible |
+| At/after `2026-11-14T19:00:00-05:00` | Worlds and its notice are ineligible; the next refresh selects standby with no expired-event notice |
 
 - [ ] Check the pure eligibility result 1 ms before, exactly at, and 1 ms after each end timestamp, then check automatic rendered removal on the next one-second refresh.
 - [ ] Standby reads “Your space.” / “Your people.” and “No events are scheduled right now.”, uses the original dark-teal palette, and carries no sample-event label. Fictional sample events do not reappear.
@@ -473,6 +476,8 @@ Local verification recorded on October 31, 2026 for runtime source `22d49100d0b3
 | Browser | Headless Chrome at 1920 × 1080 passed both poster layouts/assets, theme restoration, sample-label handling, expiry boundaries and automatic standby, reduced motion, complete 20-second playback, and automatic 12:20/12:30 triggers under a controlled clock; no failed resources, remote requests, or browser errors | Installed Chromium/Cage/HDMI visual and performance checks; explicit expiry-during-broadcast and cold-start-after-expiry cases |
 | Package | ZIP integrity, root structure, local resource references, source-byte equality, syntax, cache defaults, and SHA-256 were checked; packaged clock/config matched the owner's previous version | Published asset digest, installed updater, device-generated version and successful activation |
 | Updates and recovery | Update code/defaults were preserved; this revision did not perform device deployment or service-worker migration testing | Real Nginx refresh, unchanged/changed/empty/failed/timed-out responses, previously registered worker migration, reboot/power-loss recovery, and sustained operation |
+
+November 2, 2026 follow-up for the `worlds-finals` addition: both committed Node suites passed again. Controlled-clock Chrome checks passed all three 174 px poster layouts and local assets, three-slide rotation, all three exclusive expiry boundaries and automatic removal, Worlds remaining after November 6, full 20-second playback, and scheduled 12:20/12:30 triggers. Additional browser checks passed expiry during an active broadcast and a cold start after November 14's final expiry, restoring standby without an expired Worlds notice. Existing event records, prices, settings and clock modules were checked against the baseline. These are desktop/simulation results; the target-device checks above remain pending.
 
 Keep target-device acceptance pending until that evidence exists. Documentation approval and a passing local simulation do not certify production readiness.
 
