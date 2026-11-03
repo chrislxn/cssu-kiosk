@@ -10,3 +10,5 @@ The website's HTML identifies these files as CSSU Logo. Downloaded for this loca
 The horizontal logo file is unchanged; CSS `filter: invert(1)` presents it in white against dark backgrounds, and light event posters use the original black image. Brand assets belong to their respective owner.
 
 The SVG illustrations were created for this display. `assets/microphone.svg` and `assets/world-food.svg` are original flat vector illustrations created for the November events. Their colours and motifs reference the owner-supplied @uoftcssu / @uoftwics promotional screenshots; no Instagram interface, screenshot crop, food photograph, or replacement CSSU logo is embedded. Event facts and screenshot provenance are recorded in README.md.
+
+`assets/worlds-trophy.svg` is an original flat vector trophy illustration for the November 14, 2026 watch party. The owner supplied a dark teal/ice-blue/silver promotional reference, credited in their event text to @kitsuhae on X. This SVG references the colour direction and trophy motif; it does not embed, trace, or reproduce the original graphic, official Summoner's Cup design, League/Riot marks, or sponsor logos.

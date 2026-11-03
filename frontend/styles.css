@@ -24,3 +24,9 @@
 #screen[data-poster-theme=bytes] .identity-location,#screen[data-poster-theme=bytes] .clock>div>span{color:#edf4e9}
 #screen[data-poster-theme=bytes] .notice{color:#edf4e9}
 #screen[data-poster-theme=bytes] .notice-label,#screen[data-poster-theme=bytes] .slide-number{color:#edf4e9}
+.slide.theme-worlds{--accent:#a8d7e8;background:linear-gradient(145deg,#101c25 0%,#153846 66%,#245465 100%)}
+.slide.theme-worlds .event-details{color:#d5e6ea}
+.slide.theme-worlds .hero-art{opacity:1}
+#screen[data-poster-theme=worlds] .identity-location,#screen[data-poster-theme=worlds] .clock>div>span{color:#d5e6ea}
+#screen[data-poster-theme=worlds] .notice{color:#d5e6ea}
+#screen[data-poster-theme=worlds] .notice-label,#screen[data-poster-theme=worlds] .slide-number{color:#bdd7df}

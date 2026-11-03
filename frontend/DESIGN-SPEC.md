@@ -1,7 +1,7 @@
 # CSSU Kiosk — Frontend Design Specification
 
-**Version:** 1.1<br>
-**Baseline:** 24 October 2026; revised 31 October 2026<br>
+**Version:** 1.2<br>
+**Baseline:** 24 October 2026; revised 2 November 2026<br>
 **Scope:** the approved poster display and three-page time signal implemented in this project
 
 This specification records the current visual and behavioral decisions. It guides incremental maintenance; it is not a request to redesign the screen. See [README.md](README.md) for architecture and operations, [AGENTS.md](AGENTS.md) for AI contributor instructions, and [the release acceptance checklist](docs/DEPLOYMENT-CONTRACT.md#11-release-acceptance-tests) for verification and remaining device checks.
@@ -74,10 +74,11 @@ At the owner's request, the November posters echo their supplied promotional scr
 | --- | --- |
 | `fumbles` | Pale blue `#c9e8ec` → `#8bbfd5`, navy ink `#173f58`, blue accent `#1c6286`; microphone, cloud, peach repair motif, and a fine inset frame |
 | `bytes` | Sky blue `#216eab` → `#114775`, off-white text, yellow-green accent `#e7f16f`; globe-shaped plate, food, and flight route |
+| `worlds` | Deep teal-black `#101c25` → `#245465`, off-white text, ice-blue accent `#a8d7e8`; original silver trophy with a blue gem and restrained stadium/orbit details |
 
 Light posters use the unmodified black CSSU logo with navy masthead, clock, notice, and progress text. Dark posters retain the white logo. Event palette selectors must not recolour the separate world-clock overlay. All decorative art is static local SVG; existing motion and price-ribbon styling remain unchanged.
 
-Activities should be recognisable as new content through their palette and relevant illustration while retaining the shared design language. Do not substitute the old generic blocks or game artwork for these two event illustrations. Keep supporting text legible across the full background gradient, including dates, venue, RSVP, notices, and the integrated clock. Verify both directions of the light/dark poster transition and restoration after a time signal.
+Activities should be recognisable as new content through their palette and relevant illustration while retaining the shared design language. Do not substitute the old generic blocks or game artwork for these event illustrations. Keep supporting text legible across the full background gradient, including dates, venue, RSVP, notices, and the integrated clock. Verify both directions of the light/dark poster transition and restoration after a time signal.
 
 ## 4. Typography
 
@@ -121,10 +122,11 @@ Use explicit-offset ISO timestamps for absolute validity, with `startsAt` inclus
 | --- | --- | --- |
 | Fumbles & Failures | November 3, 2026, 1–4 PM; BA3200 | `2026-11-03T16:00:00-05:00` |
 | Bytes Around the World | November 6, 2026, 3–5 PM; BA3200 | `2026-11-06T17:00:00-05:00` |
+| LoL Worlds Finals Fan Fest + Watch Party | November 14, 2026, 11 AM–7 PM; SF 1105 & 3202 | `2026-11-14T19:00:00-05:00` |
 
-The supplied posters omit a year; 2026 follows the owner's October 31 maintenance context, as recorded in README.md. Toronto is on EST for these event dates. Event facts, prices, and validity must not change as a side effect of a visual edit.
+The first two supplied posters omit a year; 2026 follows the owner's October 31 maintenance context, as recorded in README.md. The Worlds listing explicitly gives 2026. Toronto is on EST for all three event dates. Event facts, prices, and validity must not change as a side effect of a visual edit.
 
-Eligibility refreshes once per second without a release or reload. After the first expiry, only Bytes remains. After the second, show the original dark-teal `code` standby poster: “Your space.” / “Your people.”, with “No events are scheduled right now.” and the community-board tag. Do not restore fictional event posters. Expired data stays in the source but is excluded from playback. Keep the price ribbon, ordinary notices, integrated clock, and scheduled world-time broadcasts running. If expiry happens during a broadcast, complete the broadcast and reveal the eligible poster or standby afterward.
+Eligibility refreshes once per second without a release or reload. After the first expiry, Bytes and Worlds remain; after the second, only Worlds remains. After the third, show the original dark-teal `code` standby poster: “Your space.” / “Your people.”, with “No events are scheduled right now.” and the community-board tag. Do not restore fictional event posters. Expired data stays in the source but is excluded from playback. Keep the price ribbon, ordinary notices, integrated clock, and scheduled world-time broadcasts running. If expiry happens during a broadcast, complete the broadcast and reveal the eligible poster or standby afterward.
 
 ## 5. Product ribbon
 
@@ -227,7 +229,7 @@ A design review should answer these questions with the rendered result:
 5. Do the two world-time groups remain four simultaneous portrait columns?
 6. Does the complete 20-second signal return to the current event and resume the ribbon?
 7. Does the result still work offline and without any input device?
-8. Are both November palettes recognisable, with legible masthead/metadata, matching local artwork, and no palette leakage into the world-clock overlay?
-9. Do both posters and their notices expire at the specified Toronto end times, leaving a working standby page after the final expiry?
+8. Are all three November palettes recognisable, with legible masthead/metadata, matching local artwork, and no palette leakage into the world-clock overlay?
+9. Do all three posters and their notices expire at the specified Toronto end times, leaving a working standby page after the final expiry?
 
 Document material deviations and get direction from the owner when a requested change conflicts with an approved product decision. Do not silently replace the established visual system during routine maintenance.
