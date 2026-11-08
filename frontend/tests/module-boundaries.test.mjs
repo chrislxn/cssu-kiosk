@@ -17,22 +17,31 @@ function setup(withClock){
  const set=(fn,ms,interval)=>{const current=id++;timers.set(current,{fn,at:mono+ms,interval});return current};
  const context={document,Intl,Date:TestDate,JSON,URLSearchParams,CustomEvent:class{constructor(type,options={}){this.type=type;this.detail=options.detail}},performance:{now:()=>mono},innerWidth:1280,innerHeight:720,location:{protocol:'file:',search:''},navigator:{},console:{error:e=>errors.push(e),warn(){}},setTimeout:(f,ms)=>set(f,ms,0),clearTimeout:id=>timers.delete(id),setInterval:(f,ms)=>set(f,ms,ms),clearInterval:id=>timers.delete(id),addEventListener(){},removeEventListener(){},localStorage:{getItem:()=>null,removeItem(){},setItem(){}},sessionStorage:{getItem:()=>null,setItem(){}}};
  context.window=context;vm.createContext(context);
- for(const file of ['display-shell.js','time-signal-config.js','content.js','app.js',...(withClock?['time-signal.js']:[])])vm.runInContext(fs.readFileSync(new URL('../'+file,import.meta.url),'utf8'),context);
+ for(const file of ['display-shell.js','time-signal-config.js','content.js','app.js',...(withClock?['time-signal.js']:[])]){
+  vm.runInContext(fs.readFileSync(new URL('../'+file,import.meta.url),'utf8'),context);
+  if(file==='app.js'){
+   assert(context.CSSUSignage,'bundled content must initialize successfully');
+   // Keep rotation tests independent of the current real events and their expiry.
+   const fixture=context.CSSUSignage.getContent(), template=fixture.slides[0];
+   fixture.slides=['fixture-first','fixture-second'].map(id=>({...template,id,isSample:true,startsAt:null,endsAt:null,schedule:null}));
+   context.CSSUSignage.updateContent(fixture);
+  }
+ }
  assert.equal(errors.length,0,'modules must initialize');
  return {context,errors,document,advance(ms){const target=mono+ms;let calls=0;while(true){const next=[...timers].filter(([,v])=>v.at<=target).sort((a,b)=>a[1].at-b[1].at)[0];if(!next)break;if(++calls>200)throw Error('timer loop');const [key,t]=next;wall+=t.at-mono;mono=t.at;if(t.interval)t.at+=t.interval;else timers.delete(key);t.fn()}wall+=target-mono;mono=target}};
 }
 const h=setup(true),player=h.context.CSSUSignage,clock=h.context.CSSUTimeSignal;
 assert.equal(h.document.documentElement.style.values['--design-scale'],2/3);
 assert.equal('timeSignal' in player.getContent(),false,'event data contains no clock configuration');
-h.advance(12000);assert.equal(player.getState().slideId,'fumbles-failures');clock.preview();
+h.advance(12000);assert.equal(player.getState().slideId,'fixture-first');clock.preview();
 const before=clock.getState();h.advance(1000);
 const next=player.getContent();next.slides[0].title=['Updated event','New content'];next.settings.timezone='Asia/Shanghai';player.updateContent(next);
 assert.equal(clock.getState().startedAt,before.startedAt);assert.equal(clock.getState().durationMs,20000);assert.equal(clock.getState().cities.join(','),'Toronto');
 const invalid=player.getContent();invalid.schemaVersion=99;assert.throws(()=>player.updateContent(invalid));assert(clock.isActive());
 h.advance(4000);assert.equal(clock.getState().page,2);assert.equal(clock.getState().cities.join(','),'Los Angeles,New York,Shanghai,London');
-assert.equal(player.getState().slideId,'fumbles-failures','activity timer must stay paused');
-h.advance(15000);assert.equal(clock.isActive(),false);assert.equal(player.getState().slideId,'fumbles-failures','same event resumes');
-h.advance(14000);assert.equal(player.getState().slideId,'bytes-world','event playback resumes with a full interval');
+assert.equal(player.getState().slideId,'fixture-first','activity timer must stay paused');
+h.advance(15000);assert.equal(clock.isActive(),false);assert.equal(player.getState().slideId,'fixture-first','same event resumes');
+h.advance(14000);assert.equal(player.getState().slideId,'fixture-second','event playback resumes with a full interval');
 player.destroy();clock.destroy();
-const mainOnly=setup(false);assert.equal(mainOnly.context.CSSUTimeSignal,undefined);mainOnly.advance(14000);assert.equal(mainOnly.context.CSSUSignage.getState().slideId,'bytes-world');mainOnly.context.CSSUSignage.destroy();
+const mainOnly=setup(false);assert.equal(mainOnly.context.CSSUTimeSignal,undefined);mainOnly.advance(14000);assert.equal(mainOnly.context.CSSUSignage.getState().slideId,'fixture-second');mainOnly.context.CSSUSignage.destroy();
 console.log('PASS: independent display shell; separate configs; event edits/timezone changes and invalid updates cannot reset active time signal; lifecycle notifications pause/resume the event player; event player runs without the clock module.');
