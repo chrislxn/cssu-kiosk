@@ -108,6 +108,12 @@ Event edits and rejected event updates do not reset the time signal. The time si
 
 ## 4. Edit content
 
+### Discord community invitation
+
+The normal poster and standby screen include a fixed, noninteractive invitation at the top center: “Join our Discord / Scan to join”, the short invite URL, and a local QR image. The owner supplied `https://discord.gg/5KYPGfywF`. `assets/discord-qr.svg` encodes that exact URL using QR error correction Q, a four-module white quiet zone, black modules on white, and a 185 × 185 design-pixel image. It requires no remote image service, runtime QR library, or network connection to render. Joining Discord on a phone still requires connectivity and a valid invitation.
+
+The invitation is shared markup in `index.html`, independent of event validity and rotation. It is hidden visually and from the accessibility tree during the existing time signal and restored afterward. Its text follows the poster's light/dark palette; the QR always keeps its white background. To change the invite, regenerate the SVG and update the visible URL and image alternative text together, then decode a rendered screenshot to verify it. The existing package script includes the SVG automatically. QR generation/verification tools are development tools, not device dependencies.
+
 Edit `window.CSSU_CONTENT` in `content.js`, then reload or deploy a new release. These are ordinary JavaScript objects, loaded as local scripts so desktop file previews do not require JSON fetching.
 
 | Field | Meaning / current default |

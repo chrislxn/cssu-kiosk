@@ -48,6 +48,10 @@ Do not stretch the image to fill a different aspect ratio. A laptop or non-16:9 
 
 ## 3. Identity and palette
 
+### Community QR invitation
+
+At the owner's request, the normal poster and standby include a stationary Discord invitation at x = 760, y = 22, above the event text and between the brand and clock. The local QR is 185 × 185 design pixels with black modules, a white background, and a four-module quiet zone. Keep it square, unobstructed, and free of animation or decorative overlays. Adjacent English copy reads “Join our Discord” and “Scan to join”, with the short invite URL below. The invitation remains present across event rotation and expiry; it is hidden during the full-screen time signal and restored with the poster. It adds no screen input or focusable controls.
+
 Use the bundled official logo files, with provenance retained in [ASSET-SOURCES.md](ASSET-SOURCES.md). The horizontal black logo is displayed in white using CSS inversion against the dark background. Preserve its aspect ratio and avoid reconstructing it as ordinary text or inventing a replacement mark.
 
 | Role | Value |
