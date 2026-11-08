@@ -218,6 +218,18 @@ The current version checker accepts any successful non-empty text as a version; 
 
 ## 7. Packaging and deployment boundary
 
+### Automated releases
+
+The [Release kiosk workflow](../.github/workflows/release.yml) checks and packages runtime changes on pull requests. When runtime files, tests, the packaging script, or the workflow change on `main` (including a merged PR), it automatically publishes a stable GitHub Release. Documentation-only changes and the local `version.txt` fixture do not trigger publication. To release the current `main` manually, open **Actions → Release kiosk → Run workflow**, selecting `main`.
+
+Versions follow `vYYYY.M.N` using the UTC year/month and the next available monthly sequence across existing tags and releases (including drafts). Releases are serialized. Both regression suites, JavaScript syntax, local resource paths, cache defaults, archive integrity, and source-byte equality must pass before publication. The module-boundary suite validates bundled content initialization, then uses two fixed sample fixtures so activity removal or expiry does not break rotation tests.
+
+`scripts/package-kiosk.py` creates `dist/kiosk.zip` and `dist/kiosk.zip.sha256`; it bundles local runtime files and assets with `index.html` at the root, excluding documentation, tests, development files and device-generated `version.txt`. Locally run `node --test frontend/tests/*.test.mjs` and `python3 scripts/package-kiosk.py` from the repository root. Packages are also retained as Actions artifacts for 14 days.
+
+The publish job uses GitHub's built-in `GITHUB_TOKEN` with `contents: write`; no personal access token or repository secret is required. Actions must be enabled and repository/organization policy must permit this permission. A release remains a draft until both assets upload successfully. A failed upload may leave an unpublished draft; inspect it before deleting or retrying. Retrying the workflow allocates a new version and does not overwrite an existing published release.
+
+Published stable releases become available to the existing device updater on its next check. This workflow does not connect to the Orange Pi or restart it. Passing CI does not certify physical display activation or device endurance. Disable this workflow in Actions to pause automatic releases.
+
 **Local handoff archive:** the existing `cssu-signage-demo.zip` contains a `cssu-signage/` directory, documentation, prototype helpers, and a local `version.txt` fixture. It is a convenient desktop-preview bundle, not a production release asset.
 
 **Production archive:** create a separately prepared asset named `kiosk.zip` according to [the deployment contract](docs/DEPLOYMENT-CONTRACT.md). It must have `index.html` at its root, contain every referenced runtime script/style/asset, require no device-side build, and **exclude `version.txt`**. The device updater generates that file from the activated GitHub Release tag. Do not manually maintain or increment the demo fixture as the production versioning mechanism.
