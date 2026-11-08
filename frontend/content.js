@@ -24,8 +24,8 @@ window.CSSU_CONTENT = {
   shopNote: "Demo menu · prices supplied for this concept. Confirm current prices and availability at the counter.",
   menu: [
     { name: "Soda cans", detail: "The classic pick-me-up", price: "$1.00", icon: "cola" },
-    { name: "Monster", detail: "For the extra-long sessions", price: "$2.75", icon: "energy" },
-    { name: "Red Bull", detail: "A little lift", price: "$2.75", icon: "bolt" },
+    { name: "Monster", detail: "For the extra-long sessions", price: "$3.00", icon: "energy" },
+    { name: "Red Bull", detail: "A little lift", price: "$3.00", icon: "bolt" },
     { name: "Chips", detail: "The study-break essential", price: "$0.75", icon: "chips" },
     { name: "KitKat · large", detail: "Take a well-earned break", price: "$1.50", icon: "chocolate" },
     { name: "Ice cream sandwich", detail: "A little frozen treat", price: "$0.50", icon: "icecream" },
@@ -33,22 +33,6 @@ window.CSSU_CONTENT = {
     { name: "Mini chocolate", detail: "A bite-sized treat", price: "$0.50", icon: "mini-chocolate" }
   ],
   slides: [
-    {
-      id: "fumbles-failures", category: "CSSU × WiCS", theme: "fumbles", art: "microphone", isSample: false,
-      title: ["Fumbles &", "Failures"], accentLine: 1,
-      description: "Profs, grad students & undergrads.",
-      eventName: "Fumbles & Failures", shortTitle: "Fumbles & Failures", shortDetail: "RSVP via @uoftcssu bio",
-      meta: "Nov 3 · 1–4 PM · BA3200", tag: "RSVP VIA @UOFTCSSU BIO",
-      startsAt: null, endsAt: "2026-11-03T16:00:00-05:00", schedule: null
-    },
-    {
-      id: "bytes-world", category: "CSSU SOCIAL", theme: "bytes", art: "world-food", isSample: false,
-      title: ["Bytes Around", "the World"], accentLine: 1,
-      description: "Free food from around the world.",
-      eventName: "Bytes Around the World", shortTitle: "Bytes Around the World", shortDetail: "Free food · BA3200",
-      meta: "Nov 6 · 3–5 PM · BA3200", tag: "FREE FOOD",
-      startsAt: null, endsAt: "2026-11-06T17:00:00-05:00", schedule: null
-    },
     {
       id: "llvm-clang-meetup", category: "TORONTO SOCIAL · CSSU", theme: "code", art: "code", isSample: false,
       title: ["LLVM / Clang", "Meetup"], accentLine: 1,
