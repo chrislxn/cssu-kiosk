@@ -34,6 +34,14 @@ window.CSSU_CONTENT = {
   ],
   slides: [
     {
+      id: "llm-workshop-1", category: "UTMIST · AI WORKSHOP", theme: "build", art: "code", isSample: false,
+      title: ["LLM", "Workshop 1"], accentLine: 1,
+      description: "Build a transformer in PyTorch.",
+      eventName: "Large Language Models Workshop 1", shortTitle: "LLM Workshop 1", shortDetail: "Free · RSVP required · GB244",
+      meta: "Nov 12 · 6–8 PM · GB244", tag: "FREE · RSVP REQUIRED",
+      startsAt: null, endsAt: "2026-11-12T20:00:00-05:00", schedule: null
+    },
+    {
       id: "llvm-clang-meetup", category: "TORONTO SOCIAL · CSSU", theme: "code", art: "code", isSample: false,
       title: ["LLVM / Clang", "Meetup"], accentLine: 1,
       description: "Technical talks & LLVM social.",
@@ -43,6 +51,7 @@ window.CSSU_CONTENT = {
     }
   ],
   announcements: [
+    { text: "UTMIST LLM Workshop 1 · Nov 12, 6–8 PM · GB244 · Free; RSVP: fable.social/s/oyTX4", startsAt: null, endsAt: "2026-11-12T20:00:00-05:00", schedule: null },
     { text: "LLVM / Clang Meetup · Nov 12, 6:30–9 PM · Bahen BA3200 · Free technical talks & social.", startsAt: null, endsAt: "2026-11-12T21:00:00-05:00", schedule: null },
     { text: "Fumbles & Failures · Nov 3, 1–4 PM · BA3200 · RSVP via @uoftcssu bio.", startsAt: null, endsAt: "2026-11-03T16:00:00-05:00", schedule: null },
     { text: "Bytes Around the World · Nov 6, 3–5 PM · BA3200 · Free food!", startsAt: null, endsAt: "2026-11-06T17:00:00-05:00", schedule: null },
