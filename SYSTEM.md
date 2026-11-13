@@ -671,6 +671,11 @@ sudo systemctl status fail2ban --no-pager
 
 The case was found to press against the Orange Pi power button, risking accidental shutdown from a touch or flex of the panel. The proposal to use `HandlePowerKey=ignore` was **not confirmed installed**. Prefer correcting mechanical clearance; a software setting cannot necessarily override hardware shutdown behavior.
 
+### 8.5 Wi-Fi
+
+**Updated Nov.13.2026**
+The 5Ghz Band got disabled due to unstable connection to the campus network. We haven't got further information yet but the evidence we have so far is pointing to the issue with driver of wireless adapter on this board.
+
 ---
 
 ## 9. Local Nginx server and kiosk startup
