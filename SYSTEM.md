@@ -144,6 +144,8 @@ The offline-first objective is **partially demonstrated** by serving deployed fi
 
 ### 3.1 Observed hardware
 
+**Please note that the Orange Pi 3B has multiple hardware versions and the configurations may not work across different releases**
+
 | Item | Recorded value |
 |---|---|
 | Board | Orange Pi 3B **V2.1** |
