@@ -34,6 +34,14 @@ window.CSSU_CONTENT = {
   ],
   slides: [
     {
+      id: "ta-healthcare-info", category: "CUPE 3902 · INFO SESSION", theme: "fumbles", art: "microphone", isSample: false,
+      title: ["TA Healthcare", "Info Session"], accentLine: 1,
+      description: "Claims, benefits & CUPE/GSU insurance.",
+      eventName: "TA Healthcare Info Session", shortTitle: "TA Healthcare Info", shortDetail: "Pizza, veggie options & drinks",
+      meta: "Nov 24 · 2–3 PM · BA7231", tag: "PIZZA · VEGGIE OPTIONS",
+      startsAt: null, endsAt: "2026-11-24T15:00:00-05:00", schedule: null
+    },
+    {
       id: "llm-workshop-1", category: "UTMIST · AI WORKSHOP", theme: "build", art: "code", isSample: false,
       title: ["LLM", "Workshop 1"], accentLine: 1,
       description: "Build a transformer in PyTorch.",
@@ -51,6 +59,7 @@ window.CSSU_CONTENT = {
     }
   ],
   announcements: [
+    { text: "Worked as a TA, CI, CPO or invigilator? Healthcare Info Session · Nov 24, 2–3 PM · BA7231 · Pizza, veggie options & drinks.", startsAt: null, endsAt: "2026-11-24T15:00:00-05:00", schedule: null },
     { text: "UTMIST LLM Workshop 1 · Nov 12, 6–8 PM · GB244 · Free; RSVP: fable.social/s/oyTX4", startsAt: null, endsAt: "2026-11-12T20:00:00-05:00", schedule: null },
     { text: "LLVM / Clang Meetup · Nov 12, 6:30–9 PM · Bahen BA3200 · Free technical talks & social.", startsAt: null, endsAt: "2026-11-12T21:00:00-05:00", schedule: null },
     { text: "Fumbles & Failures · Nov 3, 1–4 PM · BA3200 · RSVP via @uoftcssu bio.", startsAt: null, endsAt: "2026-11-03T16:00:00-05:00", schedule: null },
