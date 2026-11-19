@@ -34,31 +34,24 @@ window.CSSU_CONTENT = {
   ],
   slides: [
     {
+      id: "study-jam-nov20", category: "CSSU · STUDY SESSION", theme: "code", art: "code", isSample: false,
+      title: ["Study", "Jam"], accentLine: 1,
+      description: "Exam prep, assignments & snacks.",
+      eventName: "CSSU Study Jam", shortTitle: "Study Jam", shortDetail: "Drop in anytime · Snacks provided",
+      meta: "Nov 20 · 5–7 PM · BA2159", tag: "DROP IN · SNACKS PROVIDED",
+      startsAt: null, endsAt: "2026-11-20T19:00:00-05:00", schedule: null
+    },
+    {
       id: "ta-healthcare-info", category: "CUPE 3902 · INFO SESSION", theme: "fumbles", art: "microphone", isSample: false,
       title: ["TA Healthcare", "Info Session"], accentLine: 1,
       description: "Claims, benefits & CUPE/GSU insurance.",
       eventName: "TA Healthcare Info Session", shortTitle: "TA Healthcare Info", shortDetail: "Pizza, veggie options & drinks",
       meta: "Nov 24 · 2–3 PM · BA7231", tag: "PIZZA · VEGGIE OPTIONS",
       startsAt: null, endsAt: "2026-11-24T15:00:00-05:00", schedule: null
-    },
-    {
-      id: "llm-workshop-1", category: "UTMIST · AI WORKSHOP", theme: "build", art: "code", isSample: false,
-      title: ["LLM", "Workshop 1"], accentLine: 1,
-      description: "Build a transformer in PyTorch.",
-      eventName: "Large Language Models Workshop 1", shortTitle: "LLM Workshop 1", shortDetail: "Free · RSVP required · GB244",
-      meta: "Nov 12 · 6–8 PM · GB244", tag: "FREE · RSVP REQUIRED",
-      startsAt: null, endsAt: "2026-11-12T20:00:00-05:00", schedule: null
-    },
-    {
-      id: "llvm-clang-meetup", category: "TORONTO SOCIAL · CSSU", theme: "code", art: "code", isSample: false,
-      title: ["LLVM / Clang", "Meetup"], accentLine: 1,
-      description: "Technical talks & LLVM social.",
-      eventName: "LLVM / Clang Toronto Meetup", shortTitle: "LLVM / Clang Meetup", shortDetail: "Free · Talks & social · BA3200",
-      meta: "Nov 12 · 6:30–9 PM · BA3200", tag: "FREE · TALKS & SOCIAL",
-      startsAt: null, endsAt: "2026-11-12T21:00:00-05:00", schedule: null
     }
   ],
   announcements: [
+    { text: "CSSU Study Jam · Fri Nov 20, 5–7 PM · BA2159 · Snacks provided. Drop by anytime; no need to stay the full session.", startsAt: null, endsAt: "2026-11-20T19:00:00-05:00", schedule: null },
     { text: "Worked as a TA, CI, CPO or invigilator? Healthcare Info Session · Nov 24, 2–3 PM · BA7231 · Pizza, veggie options & drinks.", startsAt: null, endsAt: "2026-11-24T15:00:00-05:00", schedule: null },
     { text: "UTMIST LLM Workshop 1 · Nov 12, 6–8 PM · GB244 · Free; RSVP: fable.social/s/oyTX4", startsAt: null, endsAt: "2026-11-12T20:00:00-05:00", schedule: null },
     { text: "LLVM / Clang Meetup · Nov 12, 6:30–9 PM · Bahen BA3200 · Free technical talks & social.", startsAt: null, endsAt: "2026-11-12T21:00:00-05:00", schedule: null },
