@@ -147,6 +147,7 @@ The current poster theme is reflected in `#screen[data-poster-theme]` so the sha
 | Large Language Models Workshop 1 | November 12, 2026, 6–8 PM | GB244 | UTMIST; free; RSVP required at https://fable.social/s/oyTX4 |
 | TA Healthcare Info Session | November 24, 2026, 2–3 PM | BA7231, Bahen Centre | CUPE 3902; claims, benefits and combining CUPE/GSU insurance; pizza with veggie options and drinks |
 | CSSU Study Jam | November 20, 2026, 5–7 PM | BA2159 | Exam/assignment study session; snacks provided; drop in anytime |
+| Sweeten the Season | November 27, 2026, 4–6 PM | BA2159 | CSSU gingerbread decorating. Supplies provided. [Register on Luma](https://luma.com/1q55urus) |
 
 Source: owner-provided screenshots of @uoftcssu (Fumbles & Failures is co-posted with @uoftwics), supplied for the October 31, 2026 maintenance request. The posters omit a year; 2026 follows that request context. No RSVP destination was provided, so the board refers to the account bio without inventing a URL.
 
@@ -158,7 +159,9 @@ The owner supplied the TA Healthcare Info Session poster and accompanying Discor
 
 The owner supplied the CSSU Study Jam Discord announcement on November 19, 2026. It gives Friday, November 20, 5–7 PM, BA2159, with snacks provided and drop-in attendance throughout the session. It is for studying for upcoming exams and assignments. No admission price or RSVP requirement is inferred. The poster uses the existing dark-teal `code` theme and local `code.svg` illustration.
 
-All bundled posters and their notices are eligible immediately (`startsAt: null`, `schedule: null`) until their exclusive end timestamps. As of November 19, Study Jam and TA Healthcare Info Session rotate. Study Jam and its notice expire at `2026-11-20T19:00:00-05:00`; Healthcare remains until `2026-11-24T15:00:00-05:00`. The expired November 12 LLM Workshop 1 and LLVM / Clang posters have been removed to keep within the three-poster limit. Their historical details remain above, and their retained notices still have their original expiry timestamps. Earlier Fumbles and Bytes notices also remain expired. Toronto is on EST after the November 1 DST change. After the final event expires, the existing eligibility mechanism selects the neutral community standby poster; expired event notices also disappear. The demo-price disclaimer remains in place.
+The supplied CSSU Discord announcement gives Friday, November 27, 4–6 PM, BA2159 for Sweeten the Season. Decorating supplies are provided and spots are limited. The kiosk uses the existing `play` theme and shows the Luma signup address on the poster and in the notice.
+
+Bundled posters and their notices are eligible immediately (`startsAt: null`, `schedule: null`) until their exclusive end timestamps. Study Jam expired at `2026-11-20T19:00:00-05:00` and TA Healthcare Info Session expired at `2026-11-24T15:00:00-05:00`. Sweeten the Season ends at `2026-11-27T18:00:00-05:00`, when the neutral community standby poster returns. Earlier events remain listed above for reference.
 
 Product `icon` values select local files from `assets/products/`: `cola`, `energy`, `bolt`, `chips`, `chocolate`, `icecream`, `gum`, and `mini-chocolate`. Coffee uses its own `coffee` SVG. Unknown values use the local `snack` fallback. Every visible item must retain a suitable picture.
 
