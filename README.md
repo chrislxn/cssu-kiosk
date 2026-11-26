@@ -2,6 +2,8 @@
 
 **Digital signage system for the Computer Science Student Union (CSSU) at the University of Toronto.**
 
+[Open the CSSU Kiosk browser preview](https://chrislxn.github.io/cssu-kiosk/). GitHub Actions updates it from the published kiosk bundle. The preview shows events and the Toronto clock at the current time, including the standby screen when no events are scheduled.
+
 **For Frontend Dev Docs, See /frontend**
 
 Visit our new office at BA2285@ Bahen Center !
