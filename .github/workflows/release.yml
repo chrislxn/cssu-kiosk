@@ -55,6 +55,8 @@ jobs:
     if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    outputs:
+      tag: ${{ steps.version.outputs.tag }}
     permissions:
       contents: write
     env:
@@ -100,3 +102,33 @@ jobs:
             --notes-file "$RUNNER_TEMP/kiosk-release-notes.md"
           gh release edit "$TAG" --draft=false --latest
           printf 'Published [%s](%s/%s/releases/tag/%s)\n' "$TAG" "$GITHUB_SERVER_URL" "$GITHUB_REPOSITORY" "$TAG" >> "$GITHUB_STEP_SUMMARY"
+
+  deploy-pages:
+    needs: publish
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: kiosk-package
+          path: dist
+      - name: Prepare the published bundle for Pages
+        env:
+          RELEASE_TAG: ${{ needs.publish.outputs.tag }}
+        run: |
+          set -euo pipefail
+          (cd dist && sha256sum --check kiosk.zip.sha256)
+          unzip -q dist/kiosk.zip -d _site
+          printf '%s\n' "$RELEASE_TAG" > _site/version.txt
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
