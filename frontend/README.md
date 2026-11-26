@@ -238,6 +238,8 @@ The current version checker accepts any successful non-empty text as a version; 
 
 ### Automated releases
 
+The release workflow deploys the [browser preview](https://chrislxn.github.io/cssu-kiosk/) to GitHub Pages after publishing the release. It serves the files extracted from the same verified `kiosk.zip` under `/cssu-kiosk/` and adds `version.txt` to the hosted copy using the release tag. Use **GitHub Actions** as the publishing source in the repository's Pages settings.
+
 The [Release kiosk workflow](../.github/workflows/release.yml) checks and packages runtime changes on pull requests. When runtime files, tests, the packaging script, or the workflow change on `main` (including a merged PR), it automatically publishes a stable GitHub Release. Documentation-only changes and the local `version.txt` fixture do not trigger publication. To release the current `main` manually, open **Actions → Release kiosk → Run workflow**, selecting `main`.
 
 Versions follow `vYYYY.M.N` using the UTC year/month and the next available monthly sequence across existing tags and releases (including drafts). Releases are serialized. Both regression suites, JavaScript syntax, local resource paths, cache defaults, archive integrity, and source-byte equality must pass before publication. The module-boundary suite validates bundled content initialization, then uses two fixed sample fixtures so activity removal or expiry does not break rotation tests.
