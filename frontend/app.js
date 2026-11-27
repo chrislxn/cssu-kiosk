@@ -4,7 +4,8 @@
   'use strict';
   const $ = id => document.getElementById(id);
   const CACHE_KEY = 'cssu-signage:content:v1';
-  const ART = ['code', 'play', 'build', 'microphone', 'world-food'];
+  const RSVP_ART = new Set(['fall-2026-general-meeting-qr']);
+  const ART = ['code', 'play', 'build', 'microphone', 'world-food', ...RSVP_ART];
   const THEMES = ['code', 'play', 'build', 'fumbles', 'bytes'];
   const PRODUCT_ICONS = new Set(['coffee','cola','energy','bolt','chips','chocolate','icecream','gum','mini-chocolate']);
   let content, formatTime, formatDate, formatZone, formatSchedule;
@@ -107,9 +108,18 @@
       const top = node('div','slide-top'); top.append(node('span','',s.category));
       if (isSample) top.append(node('span','sample','SAMPLE EVENT'));
       const title = node('h1'); s.title.forEach((line,j) => title.append(node('span',j === s.accentLine ? 'accent':'',line)));
-      const art = node('img','hero-art'); art.src = `assets/${s.art}.svg`; art.alt = ''; art.width = 755; art.height = 755;
+      const hasRsvp = RSVP_ART.has(s.art);
+      const art = node('img', hasRsvp ? 'event-rsvp-code' : 'hero-art');
+      art.src = `assets/${s.art}.svg`;
+      art.alt = hasRsvp ? `QR code for ${s.eventName} registration` : '';
+      art.width = art.height = hasRsvp ? 427 : 755;
+      let visual = art;
+      if (hasRsvp) {
+        visual = node('figure', 'event-rsvp');
+        visual.append(art, node('figcaption', '', 'Scan to RSVP'));
+      }
       const details = node('div','event-details'); details.append(node('span','event-meta',s.meta));
-      slide.append(top,title,node('p','description',s.description),art,details,node('span','event-tag',s.tag)); $('slides').append(slide);
+      slide.append(top,title,node('p','description',s.description),visual,details,node('span','event-tag',s.tag)); $('slides').append(slide);
       const track = node('span','track'); track.append(node('span','fill')); $('slide-tracks').append(track);
     });
   }

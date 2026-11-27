@@ -42,12 +42,12 @@ window.CSSU_CONTENT = {
       startsAt: null, endsAt: "2026-11-27T18:00:00-05:00", schedule: null
     },
     {
-      id: "study-jam-nov20", category: "CSSU · STUDY SESSION", theme: "code", art: "code", isSample: false,
-      title: ["Study", "Jam"], accentLine: 1,
-      description: "Exam prep, assignments & snacks.",
-      eventName: "CSSU Study Jam", shortTitle: "Study Jam", shortDetail: "Drop in anytime · Snacks provided",
-      meta: "Nov 20 · 5–7 PM · BA2159", tag: "DROP IN · SNACKS PROVIDED",
-      startsAt: null, endsAt: "2026-11-20T19:00:00-05:00", schedule: null
+      id: "fall-2026-general-meeting", category: "CSSU · FALL 2026", theme: "code", art: "fall-2026-general-meeting-qr", isSample: false,
+      title: ["General", "Meeting"], accentLine: 1,
+      description: "CSSU members: hear updates, preview upcoming events & share feedback.",
+      eventName: "CSSU Fall 2026 General Meeting", shortTitle: "CSSU General Meeting", shortDetail: "Members welcome · Scan to RSVP",
+      meta: "Sun Nov 29 · 2:30–3:30 PM · BA3200", tag: "REFRESHMENTS PROVIDED",
+      startsAt: null, endsAt: "2026-11-29T15:30:00-05:00", schedule: null
     },
     {
       id: "ta-healthcare-info", category: "CUPE 3902 · INFO SESSION", theme: "fumbles", art: "microphone", isSample: false,
@@ -59,6 +59,7 @@ window.CSSU_CONTENT = {
     }
   ],
   announcements: [
+    { text: "CSSU General Meeting · Sun Nov 29, 2:30–3:30 PM · BA3200 · RSVP for seating priority if space is limited.", startsAt: null, endsAt: "2026-11-29T15:30:00-05:00", schedule: null },
     { text: "Sweeten the Season · Fri Nov 27, 4–6 PM · BA2159 · Gingerbread decorating supplies provided. Limited spots. RSVP at luma.com/1q55urus.", startsAt: null, endsAt: "2026-11-27T18:00:00-05:00", schedule: null },
     { text: "CSSU Study Jam · Fri Nov 20, 5–7 PM · BA2159 · Snacks provided. Drop by anytime; no need to stay the full session.", startsAt: null, endsAt: "2026-11-20T19:00:00-05:00", schedule: null },
     { text: "Worked as a TA, CI, CPO or invigilator? Healthcare Info Session · Nov 24, 2–3 PM · BA7231 · Pizza, veggie options & drinks.", startsAt: null, endsAt: "2026-11-24T15:00:00-05:00", schedule: null },

@@ -148,6 +148,7 @@ The current poster theme is reflected in `#screen[data-poster-theme]` so the sha
 | TA Healthcare Info Session | November 24, 2026, 2–3 PM | BA7231, Bahen Centre | CUPE 3902; claims, benefits and combining CUPE/GSU insurance; pizza with veggie options and drinks |
 | CSSU Study Jam | November 20, 2026, 5–7 PM | BA2159 | Exam/assignment study session; snacks provided; drop in anytime |
 | Sweeten the Season | November 27, 2026, 4–6 PM | BA2159 | CSSU gingerbread decorating. Supplies provided. [Register on Luma](https://luma.com/1q55urus) |
+| CSSU Fall 2026 General Meeting | November 29, 2026, 2:30–3:30 PM | BA3200 | CSSU general members are invited to hear updates and share feedback. Refreshments provided. [RSVP on Google Forms](https://docs.google.com/forms/d/e/1FAIpQLSclVa3WQ0REEUN4jJ3sTITn4_vfEPo-CNuvobCpZnXCB_HTww/viewform?usp=publish-editor) |
 
 Source: owner-provided screenshots of @uoftcssu (Fumbles & Failures is co-posted with @uoftwics), supplied for the October 31, 2026 maintenance request. The posters omit a year; 2026 follows that request context. No RSVP destination was provided, so the board refers to the account bio without inventing a URL.
 
@@ -161,7 +162,9 @@ The owner supplied the CSSU Study Jam Discord announcement on November 19, 2026.
 
 The supplied CSSU Discord announcement gives Friday, November 27, 4–6 PM, BA2159 for Sweeten the Season. Decorating supplies are provided and spots are limited. The kiosk uses the existing `play` theme and shows the Luma signup address on the poster and in the notice.
 
-Bundled posters and their notices are eligible immediately (`startsAt: null`, `schedule: null`) until their exclusive end timestamps. Study Jam expired at `2026-11-20T19:00:00-05:00` and TA Healthcare Info Session expired at `2026-11-24T15:00:00-05:00`. Sweeten the Season ends at `2026-11-27T18:00:00-05:00`, when the neutral community standby poster returns. Earlier events remain listed above for reference.
+Bundled posters and their notices are eligible immediately (`startsAt: null`, `schedule: null`) until their exclusive end timestamps. Study Jam expired at `2026-11-20T19:00:00-05:00` and TA Healthcare Info Session expired at `2026-11-24T15:00:00-05:00`. Sweeten the Season ends at `2026-11-27T18:00:00-05:00`. The general meeting ends at `2026-11-29T15:30:00-05:00`, when the neutral community standby poster returns. Earlier events remain listed above for reference.
+
+The general meeting poster pairs “Scan to RSVP” with a local SVG QR code for the supplied Google Form. The code replaces the illustration on that poster and is registered in the `RSVP_ART` allowlist in `app.js`. It includes a four-module white margin. The RSVP notice explains that signups get seating priority if space is limited.
 
 Product `icon` values select local files from `assets/products/`: `cola`, `energy`, `bolt`, `chips`, `chocolate`, `icecream`, `gum`, and `mini-chocolate`. Coffee uses its own `coffee` SVG. Unknown values use the local `snack` fallback. Every visible item must retain a suitable picture.
 
